@@ -1,0 +1,28 @@
+﻿@page
+@model Pesach_Project.Pages.WatchUsersModel
+@using System.Data
+@{
+	ViewData["Title"] = "WatchUsers";
+}
+<h1>Watch Users</h1>
+<table class="table">
+	<thead>
+		<tr>
+			@foreach(DataColumn column in Model.dt.Columns)
+			{
+				<th>@column.ColumnName</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DataRow row in Model.dt.Rows)
+		{
+			<tr>
+				@foreach (DataColumn column in Model.dt.Columns)
+				{
+					<td>@row[column]</td>
+				}
+			</tr>
+		}
+	</tbody>
+</table>

@@ -16,8 +16,8 @@ namespace Pesach_Project.Pages
                 return RedirectToPage("/Index");
             }
             Helper helper = new Helper();
-            string SQL = "SELECT * FROM UsersPesach";
-            dt  = helper.RetrieveTable(SQL, "UsersPesach");
+            string SQL = "SELECT * FROM Users";
+            dt  = helper.RetrieveTable(SQL, "Users");
             return Page();
         }
     }

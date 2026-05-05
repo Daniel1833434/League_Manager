@@ -19,7 +19,7 @@ namespace Pesach_Project.Pages
         public IActionResult OnPost()
         {
             Helper helper = new Helper();
-            int n = helper.Insert(NewUser, "UsersPesach");
+            int n = helper.InsertToUsers(NewUser, "Users");
             if (n == -1)
             {
                 msg = "Username already taken.";

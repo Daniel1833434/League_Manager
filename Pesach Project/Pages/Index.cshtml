@@ -1,17 +1,58 @@
 ﻿@page
 @model IndexModel
+@using System.Data
 @{
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
     @if( Model.UserName != null){
 
-        <p>Welcome @Model.UserName! </p>
+        <p class="display-4">Welcome @Model.UserName! </p>
+		<table class="table">
+			<thead>
+				<tr>
+					@foreach (DataColumn column in Model.dt.Columns)
+					{
+						<th>@column.ColumnName</th>
+					}
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (DataRow row in Model.dt.Rows)
+				{
+					<tr>
+						@foreach (DataColumn column in Model.dt.Columns)
+						{
+							<td>@row[column]</td>
+						}
+						<td>
+							<form method="post" asp-page-handler="Manage" class="d-inline">
+								<input type="hidden" name="LeagueId" value="@row["Id"]" />
+
+								<button type="submit" class="btn btn-success btn-sm">
+									Manage
+								</button>
+							</form>
+							<form method="post" asp-page-handler="Delete" class="d-inline">
+								<input type="hidden" name="LeagueId" value="@row["Id"]" />
+
+								<button type="submit" class="btn btn-danger btn-sm">
+									Delete
+								</button>
+							</form>
+
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<a class="btn btn-primary px-4 ms-2" asp-area="" asp-page="/CreateLeague">CreateLeague</a>
     }
     else
     {
+		<h1 class="display-4">Welcome</h1>
         <p>Please <a asp-page="/Login" class="btn btn-primary px-4 ms-2">Login</a> to continue.</p>
     }
 </div>

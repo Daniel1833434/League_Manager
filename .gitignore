@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Allow this project database
+!Pesach Project/App_Data/
+!Pesach Project/App_Data/Database.mdf

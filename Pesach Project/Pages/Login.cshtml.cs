@@ -19,13 +19,14 @@ namespace Pesach_Project.Pages
 
         public IActionResult OnPost()
         {
-            string SQLStr = $"SELECT * FROM UsersPesach WHERE UserName LIKE '{Username}' AND Password LIKE '{Password}'";
+            string SQLStr = $"SELECT * FROM Users WHERE UserName LIKE '{Username}' AND Password LIKE '{Password}'";
             Helper helper = new Helper();
-            DataTable dt = helper.RetrieveTable(SQLStr, "UsersPesach");
+            DataTable dt = helper.RetrieveTable(SQLStr, "Users");
 
             if (dt.Rows.Count > 0)
             {
                 HttpContext.Session.SetString("UserName", Username);
+                HttpContext.Session.SetString("UserId", dt.Rows[0]["Id"].ToString());
                 HttpContext.Session.SetString("Admin", dt.Rows[0]["Admin"].ToString());
                 return RedirectToPage("/Index");
             }

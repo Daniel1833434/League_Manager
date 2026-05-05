@@ -31,7 +31,7 @@ namespace Pesach_Project.Model
             return ds.Tables[table];
         }
 
-        public int Insert(User user, string table)
+        public int InsertToUsers(User user, string table)
         {
             // התחברות למסד הנתונים
             SqlConnection con = new SqlConnection(conString);
@@ -65,6 +65,75 @@ namespace Pesach_Project.Model
             // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
             int n = adapter.Update(ds, table);
+            return n;
+        }
+
+        public int InsertToLeagues(League league, string table)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM {table} WHERE LeagueName Like '{league.LeagueName}'";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, table);
+
+            if (ds.Tables[table].Rows.Count > 0)
+            {
+                return -1;
+            }
+
+            // בניית השורה להוספה
+            DataRow dr = ds.Tables[table].NewRow();
+            dr["LeagueName"] = league.LeagueName;
+            dr["MaxPlayers"] = league.MaxPlayers;
+            dr["OwnerId"] = league.OwnerId;
+
+            ds.Tables[table].Rows.Add(dr);
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            int n = adapter.Update(ds, table);
+            return n;
+        }
+        public int DeleteRow(string Id, string table)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // שולפים רק את השורה שרוצים למחוק
+            string SQLStr = $"SELECT * FROM {table} WHERE Id = @Id";
+
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+            cmd.Parameters.AddWithValue("@Id", Id);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, table);
+
+            // אם לא נמצאה שורה עם ה-Id הזה
+            if (ds.Tables[table].Rows.Count == 0)
+            {
+                return 0;
+            }
+
+            // מוחקים את השורה מתוך ה-DataSet
+            ds.Tables[table].Rows[0].Delete();
+
+            // עדכון הדאטה בייס
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+
+            int n = adapter.Update(ds, table);
+
             return n;
         }
     }

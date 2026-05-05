@@ -1,0 +1,104 @@
+﻿@page
+@model Pesach_Project.Pages.CreateLeagueModel
+@{
+    ViewData["Title"] = "Create League";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="mb-0">Create League</h3>
+                    <p class="small mb-0">Start your own league!</p>
+                </div>
+
+                <div class="card-body p-4">
+                    <form method="post" onsubmit="return validateForm()">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">League Name</label>
+                            <input asp-for="NewLeague.LeagueName" id="leagueName" class="form-control" oninput="leagueNameVal()" />
+                            <div id="leagueNameMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Max Players</label>
+                            <input asp-for="NewLeague.MaxPlayers" id="maxPlayers" type="number" class="form-control" oninput="maxPlayersVal()" />
+                            <div id="maxPlayersMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="text-danger small mb-2">@Model.msg</div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Create League</button>
+                            <button type="reset" class="btn btn-light text-muted" onclick="clearMsgs()">Clear</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-center py-3 bg-light">
+                    <p class="mb-0">
+                        <a asp-page="/Index" class="fw-bold text-decoration-none">Back to home</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var isLeagueNameValid = leagueNameVal();
+        var isMaxPlayersValid = maxPlayersVal();
+
+        return isLeagueNameValid && isMaxPlayersValid;
+    }
+
+    function leagueNameVal() {
+        var leagueName = document.getElementById("leagueName").value;
+        var msgBox = document.getElementById("leagueNameMsg");
+
+        if (leagueName.length == 0) {
+            msgBox.innerHTML = "You must enter league name";
+            return false;
+        }
+
+        if (leagueName.length < 3) {
+            msgBox.innerHTML = "League name must be at least 3 characters";
+            return false;
+        }
+
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function maxPlayersVal() {
+        var maxPlayers = document.getElementById("maxPlayers").value;
+        var msgBox = document.getElementById("maxPlayersMsg");
+
+        if (maxPlayers.length == 0) {
+            msgBox.innerHTML = "You must enter max players";
+            return false;
+        }
+
+        if (maxPlayers < 2) {
+            msgBox.innerHTML = "Max players must be at least 2";
+            return false;
+        }
+
+        if (maxPlayers > 100) {
+            msgBox.innerHTML = "Max players cannot be more than 100";
+            return false;
+        }
+
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function clearMsgs() {
+        var msgs = document.getElementsByClassName("text-danger");
+        for (var i = 0; i < msgs.length; i++) {
+            msgs[i].innerHTML = "";
+        }
+    }
+</script>

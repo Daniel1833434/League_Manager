@@ -14,6 +14,10 @@
 				<tr>
 					@foreach (DataColumn column in Model.dt.Columns)
 					{
+						if(column.ColumnName == "Id")
+						{
+							continue;
+                        }
 						<th>@column.ColumnName</th>
 					}
 					<th>Actions</th>
@@ -25,6 +29,10 @@
 					<tr>
 						@foreach (DataColumn column in Model.dt.Columns)
 						{
+							if (column.ColumnName == "Id")
+							{
+								continue;
+							}
 							<td>@row[column]</td>
 						}
 						<td>

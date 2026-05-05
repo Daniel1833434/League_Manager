@@ -14,7 +14,7 @@ namespace Pesach_Project.Model
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
-            conString = configuration.GetConnectionString("UsersDB");
+            conString = configuration.GetConnectionString("DB");
         }
         public DataTable RetrieveTable(string SQLStr , string table)
         {

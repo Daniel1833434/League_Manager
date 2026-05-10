@@ -1,0 +1,18 @@
+﻿@page
+@model Pesach_Project.Pages.ManageLeaguesModel
+@{
+    ViewData["Title"] = "ManageLeagues";
+}
+<p class="display-3">Manage @Model.LeagueName 🏀⚽🎾! </p>
+<div class="col-md-4">
+    <div class="card shadow-sm">
+        <div class="card-body text-center">
+            <h3 class="card-title">👥 Players</h3>
+            <p class="card-text">Click here to manage players</p>
+
+            <a asp-page="/ManagePlayers" class="btn btn-primary">
+                🛠️ Manage Players
+            </a>
+        </div>
+    </div>
+</div>

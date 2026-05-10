@@ -12,6 +12,8 @@ namespace Pesach_Project.Pages
         
         [BindProperty]
         public string LeagueId { get; set; }
+        [BindProperty]
+        public string LeagueName { get; set; }
         public string Id { get; set; }
         public DataTable dt { get; set; }
         public IndexModel(ILogger<IndexModel> logger)
@@ -33,7 +35,6 @@ namespace Pesach_Project.Pages
         }
         public IActionResult OnPostDelete()
         {
-            HttpContext.Session.SetString("LeagueId", LeagueId);
             Helper helper = new Helper();
             helper.DeleteRow(LeagueId, "Leagues");
             return RedirectToPage("/Index");
@@ -41,6 +42,7 @@ namespace Pesach_Project.Pages
         }
         public IActionResult OnPostManage()
         {
+            HttpContext.Session.SetString("LeagueName", LeagueName);
             HttpContext.Session.SetString("LeagueId", LeagueId);
             return RedirectToPage("/ManageLeagues");
         }

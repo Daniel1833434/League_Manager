@@ -136,5 +136,38 @@ namespace Pesach_Project.Model
 
             return n;
         }
+        public int InsertToPlayers(Player player, string table)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM {table} WHERE LeagueId = {player.LeagueId} AND PlayerName LIKE '{player.PlayerName}'";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, table);
+
+            if (ds.Tables[table].Rows.Count > 0)
+            {
+                return -1;
+            }
+
+            // בניית השורה להוספה
+            DataRow dr = ds.Tables[table].NewRow();
+            dr["PlayerName"] = player.PlayerName;
+            dr["LeagueId"] = player.LeagueId;
+
+            ds.Tables[table].Rows.Add(dr);
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            int n = adapter.Update(ds, table);
+            return n;
+        }
     }
 }

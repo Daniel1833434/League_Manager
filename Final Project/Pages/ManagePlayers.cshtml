@@ -1,0 +1,47 @@
+﻿@page
+@model Pesach_Project.Pages.ManagePlayersModel
+@using System.Data
+@{
+    ViewData["Title"] = "ManagePlayers";
+}
+<h2>👥 Players</h2>
+
+<form method="post" class="mb-3">
+    <input type="hidden" asp-for="LeagueId" />
+
+    <input asp-for="NewPlayer.PlayerName"
+           class="form-control mb-2"
+           placeholder="Enter player name" />
+
+    <button type="submit" class="btn btn-primary">
+        Add Player
+    </button>
+</form>
+<div class="text-danger small mb-2">@Model.msg</div>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Player Name</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DataRow row in Model.dt.Rows)
+		{
+			<tr>
+				@foreach (DataColumn column in Model.dt.Columns)
+				{
+					if (column.ColumnName == "PlayerName")
+					{
+						<td>@row[column]</td>
+					}	
+				}
+				<td>
+				
+
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

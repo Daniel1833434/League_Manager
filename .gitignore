@@ -364,4 +364,4 @@ FodyWeavers.xsd
 # Allow this project database
 !Final Project/App_Data/
 !Final Project/App_Data/Database.mdf
-!Final Project/App_Data/Database.Idf
+!Final Project/App_Data/Database.ldf

@@ -9,6 +9,9 @@ namespace Pesach_Project.Pages
     {
         [BindProperty]
         public Player NewPlayer { get; set; }
+
+        [BindProperty]
+        public string PlayerId { get; set; }
         public string LeagueId { get; set; }
         public DataTable dt { get; set; }
         public string msg { get; set; } = string.Empty;
@@ -16,11 +19,11 @@ namespace Pesach_Project.Pages
         {
             LeagueId = HttpContext.Session.GetString("LeagueId");
             Helper helper = new Helper();
-            string SQL = $"SELECT PlayerName FROM Players WHERE LeagueId = {LeagueId}";
-            dt = helper.RetrieveTable(SQL, "Leagues");
+            string SQL = $"SELECT Id, PlayerName FROM Players WHERE LeagueId = {LeagueId}";
+            dt = helper.RetrieveTable(SQL, "Players");
             return Page();
         }
-        public IActionResult OnPost()
+        public IActionResult OnPostAdd()
         {
             Helper helper = new Helper();
             NewPlayer.LeagueId = int.Parse(HttpContext.Session.GetString("LeagueId"));
@@ -30,6 +33,13 @@ namespace Pesach_Project.Pages
                 msg = "Player name already taken.";
             }
             return RedirectToPage();
+        }
+        public IActionResult OnPostDelete()
+        {
+            Helper helper = new Helper();
+            helper.DeleteRow(PlayerId, "Players");
+            return RedirectToPage("/ManagePlayers");
+
         }
     }
 }

@@ -6,7 +6,7 @@
 }
 <h2>👥 Players</h2>
 
-<form method="post" class="mb-3">
+<form method="post" asp-page-handler="Add"  class="mb-3">
     <input type="hidden" asp-for="LeagueId" />
 
     <input asp-for="NewPlayer.PlayerName"
@@ -30,16 +30,15 @@
 		@foreach (DataRow row in Model.dt.Rows)
 		{
 			<tr>
-				@foreach (DataColumn column in Model.dt.Columns)
-				{
-					if (column.ColumnName == "PlayerName")
-					{
-						<td>@row[column]</td>
-					}	
-				}
+				<td>@row["PlayerName"]</td>
 				<td>
-				
+					<form method="post" asp-page-handler="Delete" class="d-inline">
+						<input type="hidden" name="PlayerId" value="@row["Id"]" />
 
+						<button type="submit" class="btn btn-danger btn-sm">
+							Delete
+						</button>
+					</form>
 				</td>
 			</tr>
 		}

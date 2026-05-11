@@ -32,6 +32,17 @@
 			<tr>
 				<td>@row["PlayerName"]</td>
 				<td>
+					<form method="post" asp-page-handler="ChangeName" class="d-inline">
+						<input type="hidden" name="PlayerId" value="@row["Id"]" />
+						<input type="hidden" name="NewName"/>
+
+						<button type="submit"
+								onclick="return askName(this)"
+								class="btn btn-warning btn-sm">
+							Change Name
+						</button>
+					</form>
+
 					<form method="post" asp-page-handler="Delete" class="d-inline">
 						<input type="hidden" name="PlayerId" value="@row["Id"]" />
 
@@ -44,3 +55,24 @@
 		}
 	</tbody>
 </table>
+<script>
+	function askName(button) {
+		let newName = prompt("Enter the new player name:");
+
+		if (newName == null) {
+			return false; 
+		}
+
+		newName = newName.trim();
+
+		if (newName === "") {
+			alert("Name cannot be empty.");
+			return false;
+		}
+
+		let form = button.closest("form");
+
+		form.querySelector('input[name="NewName"]').value = newName;
+
+	}
+</script>

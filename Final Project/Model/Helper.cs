@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System.Data;
-using Microsoft.Data.SqlClient;
+using System.Numerics;
 
 namespace Pesach_Project.Model
 {
@@ -167,6 +168,42 @@ namespace Pesach_Project.Model
             // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
             int n = adapter.Update(ds, table);
+            return n;
+        }
+
+        public int UpdatePlayerName(int LeagueId,string playerId, string newName)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players WHERE LeagueId = {LeagueId} AND PlayerName LIKE '{newName}'";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            if (ds.Tables["Players"].Rows.Count > 0)
+            {
+                return -1;
+            }
+
+            SQLStr = $"SELECT * FROM Players WHERE LeagueId = {LeagueId} AND Id = {playerId}";
+            cmd = new SqlCommand(SQLStr, con);
+
+            adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            DataRow dr = ds.Tables["Players"].Select($"Id = {playerId}")[0];
+            dr["PlayerName"] = newName;
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            int n = adapter.Update(ds, "Players");
             return n;
         }
     }

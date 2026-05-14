@@ -9,15 +9,15 @@
     @if( Model.UserName != null){
 
         <p class="display-4">Welcome @Model.UserName! </p>
-		<table class="table">
-			<thead>
+		<table class="table text-center align-middle">
+			<thead class="table-dark">
 				<tr>
 					@foreach (DataColumn column in Model.dt.Columns)
 					{
-						if(column.ColumnName == "Id")
+						if (column.ColumnName == "Id")
 						{
 							continue;
-                        }
+						}
 						<th>@column.ColumnName</th>
 					}
 					<th>Actions</th>
@@ -33,7 +33,7 @@
 							{
 								continue;
 							}
-							<td>@row[column]</td>
+							<td class="fw-bold">@row[column]</td>
 						}
 						<td>
 							<form method="post" asp-page-handler="Manage" class="d-inline">
@@ -44,6 +44,7 @@
 									Manage
 								</button>
 							</form>
+
 							<form method="post" asp-page-handler="Delete" class="d-inline">
 								<input type="hidden" name="LeagueId" value="@row["Id"]" />
 
@@ -51,7 +52,6 @@
 									Delete
 								</button>
 							</form>
-
 						</td>
 					</tr>
 				}

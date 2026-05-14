@@ -45,7 +45,7 @@ namespace Pesach_Project.Pages
         public IActionResult OnPostDelete()
         {
             Helper helper = new Helper();
-            helper.DeleteRow(PlayerId, "Players");
+            helper.DeletePlayer(PlayerId, "Players");
             return RedirectToPage("/ManagePlayers");
 
         }

@@ -19,8 +19,8 @@
 </form>
 <div class="text-danger small mb-2">@Model.msg</div>
 
-<table class="table">
-	<thead>
+<table class="table text-center align-middle">
+	<thead class="table-dark">
 		<tr>
 			<th>Player Name</th>
 			<th>Actions</th>
@@ -30,11 +30,11 @@
 		@foreach (DataRow row in Model.dt.Rows)
 		{
 			<tr>
-				<td>@row["PlayerName"]</td>
+				<td class="fw-bold">@row["PlayerName"]</td>
 				<td>
 					<form method="post" asp-page-handler="ChangeName" class="d-inline">
 						<input type="hidden" name="PlayerId" value="@row["Id"]" />
-						<input type="hidden" name="NewName"/>
+						<input type="hidden" name="NewName" />
 
 						<button type="submit"
 								onclick="return askName(this)"
@@ -55,6 +55,9 @@
 		}
 	</tbody>
 </table>
+
+<a asp-page="/ManageLeagues" class="fw-bold text-decoration-none">Back to ManageLeague</a>
+
 <script>
 	function askName(button) {
 		let newName = prompt("Enter the new player name:");

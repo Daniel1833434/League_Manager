@@ -1,0 +1,216 @@
+﻿@page
+@model Pesach_Project.Pages.ManageGamesModel
+@using System.Data
+
+@{
+    ViewData["Title"] = "Manage Games";
+}
+
+<h1 class="display-5 mb-4">🏆 Manage Games</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h4 class="card-title mb-3">➕ Add New Game</h4>
+
+        <form method="post" asp-page-handler="AddGame" class="row g-3 align-items-end" onsubmit="return validateGame()">
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Player 1</label>
+
+                <select asp-for="newGame.Player1Id" id="player1" class="form-select">
+
+                    <option value="">Choose player</option>
+
+                    @foreach (DataRow player in Model.playersDt.Rows)
+                    {
+                        <option value="@player["Id"]">@player["PlayerName"]</option>
+                    }
+                </select>
+
+                <input type="hidden" asp-for="newGame.Player1Name" id="player1Name" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Player 1 Score</label>
+                <input asp-for="newGame.Player1Score"
+                       type="number"
+                       min="0"
+                       class="form-control"
+                       placeholder="0" />
+            </div>
+
+            <div class="col-md-1 text-center">
+                <span class="fw-bold text-muted fs-5">VS</span>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Player 2 Score</label>
+                <input asp-for="newGame.Player2Score"
+                       type="number"
+                       min="0"
+                       class="form-control"
+                       placeholder="0" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Player 2</label>
+
+                <select asp-for="newGame.Player2Id" id="player2" class="form-select">
+
+                    <option value="">Choose player</option>
+
+                    @foreach (DataRow player in Model.playersDt.Rows)
+                    {
+                        <option value="@player["Id"]">@player["PlayerName"]</option>
+                    }
+                </select>
+
+                <input type="hidden" asp-for="newGame.Player2Name" id="player2Name" />
+            </div>>
+
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">
+                    Add
+                </button>
+            </div>
+
+        </form>
+
+        <div id="gameMsg" class="alert alert-danger mt-3 mb-0 d-none"></div>
+
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="card-title mb-3">⛹️ Games List</h4>
+
+        @if (Model.dt.Rows.Count == 0)
+        {
+            <div class="alert alert-info">
+                No games were added yet.
+            </div>
+        }
+        else
+        {
+            <table class="table text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Player 1</th>
+                        <th>Score</th>
+                        <th></th>
+                        <th>Score</th>
+                        <th>Player 2</th>
+                        <th>Result</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (DataRow row in Model.dt.Rows)
+                    {
+                        int player1Score = int.Parse(row["Player1Score"].ToString());
+                        int player2Score = int.Parse(row["Player2Score"].ToString());
+
+                        string result = "Draw";
+
+                        if (player1Score > player2Score)
+                        {
+                            result = row["Player1Name"].ToString();
+                        }
+                        else if (player2Score > player1Score)
+                        {
+                            result = row["Player2Name"].ToString();
+                        }
+
+                        <tr>
+                            <td class="fw-bold">@row["Player1Name"]</td>
+                            <td>
+                                <span class="badge bg-primary fs-6">@player1Score</span>
+                            </td>
+                            <td class="fw-bold text-muted">VS</td>
+                            <td>
+                                <span class="badge bg-primary fs-6">@player2Score</span>
+                            </td>
+                            <td class="fw-bold">@row["Player2Name"]</td>
+                            <td>
+                                @if (result == "Draw")
+                                {
+                                    <span class="badge bg-secondary">Draw</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">🏆 @result won</span>
+                                }
+                            </td>
+                            <td>
+                                <form method="post" asp-page-handler="Update" class="d-inline">
+                                    <input type="hidden" name="gameId" value="@row["Id"]" />
+
+                                    <button type="submit" class="btn btn-warning btn-sm">
+                                        Update
+                                    </button>
+                                </form>
+                                <form method="post" asp-page-handler="Delete" class="d-inline">
+                                    <input type="hidden" name="gameId" value="@row["Id"]" />
+
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<a asp-page="/ManageLeagues" class="fw-bold text-decoration-none">Back to ManageLeague</a>
+
+<script>
+    function setPlayerNames() {
+        var player1Select = document.getElementById("player1");
+        var player2Select = document.getElementById("player2");
+
+        var player1Name = player1Select.options[player1Select.selectedIndex].text;
+        var player2Name = player2Select.options[player2Select.selectedIndex].text;
+
+        if (player1Select.value === "") {
+            player1Name = "";
+        }
+
+        if (player2Select.value === "") {
+            player2Name = "";
+        }
+
+        document.getElementById("player1Name").value = player1Name;
+        document.getElementById("player2Name").value = player2Name;
+    }
+
+    function validateGame() {
+        var player1 = document.getElementById("player1").value;
+        var player2 = document.getElementById("player2").value;
+        var msg = document.getElementById("gameMsg");
+
+        if (player1 === "" || player2 === "") {
+            msg.innerHTML = "You must choose both players.";
+            msg.classList.remove("d-none");
+            return false;
+        }
+
+        if (player1 === player2) {
+            msg.innerHTML = "A player cannot play against himself.";
+            msg.classList.remove("d-none");
+            return false;
+        }
+
+        setPlayerNames();
+
+        msg.innerHTML = "";
+        msg.classList.add("d-none");
+        return true;
+    }
+</script>

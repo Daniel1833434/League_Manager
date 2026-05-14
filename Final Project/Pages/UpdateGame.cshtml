@@ -1,0 +1,126 @@
+﻿@page
+@model Pesach_Project.Pages.UpdateGameModel
+@using System.Data
+@{
+    ViewData["Title"] = "Update Game";
+}
+<h1 class="display-5 mb-4">🏆 Update Game</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h4 class="card-title mb-3">✏️ Update Game</h4>
+
+        <form method="post" asp-page-handler="Update" class="row g-3 align-items-end" onsubmit="return validateGame()">
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Player 1</label>
+
+                <select asp-for="newGame.Player1Id" id="player1" class="form-select">
+
+                    <option value="">@Model.lastGame.Player1Name</option>
+
+                    @foreach (DataRow player in Model.playersDt.Rows)
+                    {
+                        <option value="@player["Id"]">@player["PlayerName"]</option>
+                    }
+                </select>
+
+                <input type="hidden" asp-for="newGame.Player1Name" id="player1Name" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Player 1 Score</label>
+                <input asp-for="newGame.Player1Score"
+                       type="number"
+                       min="0"
+                       class="form-control"
+                       placeholder="@Model.lastGame.Player1Score" />
+            </div>
+
+            <div class="col-md-1 text-center">
+                <span class="fw-bold text-muted fs-5">VS</span>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Player 2 Score</label>
+                <input asp-for="newGame.Player2Score"
+                       type="number"
+                       min="0"
+                       class="form-control"
+                       placeholder="@Model.lastGame.Player2Score" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Player 2</label>
+
+                <select asp-for="newGame.Player2Id" id="player2" class="form-select">
+
+                    <option value="">@Model.lastGame.Player2Name</option>
+
+                    @foreach (DataRow player in Model.playersDt.Rows)
+                    {
+                        <option value="@player["Id"]">@player["PlayerName"]</option>
+                    }
+                </select>
+
+                <input type="hidden" asp-for="newGame.Player2Name" id="player2Name" />
+            </div>>
+
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">
+                    Update
+                </button>
+            </div>
+
+        </form>
+
+        <div id="gameMsg" class="alert alert-danger mt-3 mb-0 d-none"></div>
+
+    </div>
+</div>
+<a asp-page="/ManageGames" class="fw-bold text-decoration-none">Back to ManageGames</a>
+
+<script>
+    function setPlayerNames() {
+        var player1Select = document.getElementById("player1");
+        var player2Select = document.getElementById("player2");
+
+        var player1Name = player1Select.options[player1Select.selectedIndex].text;
+        var player2Name = player2Select.options[player2Select.selectedIndex].text;
+
+        if (player1Select.value === "") {
+            player1Name = "";
+        }
+
+        if (player2Select.value === "") {
+            player2Name = "";
+        }
+
+        document.getElementById("player1Name").value = player1Name;
+        document.getElementById("player2Name").value = player2Name;
+    }
+
+    function validateGame() {
+        var player1 = document.getElementById("player1").value;
+        var player2 = document.getElementById("player2").value;
+        var msg = document.getElementById("gameMsg");
+
+        if (player1 === "" || player2 === "") {
+            msg.innerHTML = "You must choose both players.";
+            msg.classList.remove("d-none");
+            return false;
+        }
+
+        if (player1 === player2) {
+            msg.innerHTML = "A player cannot play against himself.";
+            msg.classList.remove("d-none");
+            return false;
+        }
+
+        setPlayerNames();
+
+        msg.innerHTML = "";
+        msg.classList.add("d-none");
+        return true;
+    }
+</script>

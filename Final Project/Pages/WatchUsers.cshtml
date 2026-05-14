@@ -5,10 +5,10 @@
 	ViewData["Title"] = "WatchUsers";
 }
 <h1>Watch Users</h1>
-<table class="table">
-	<thead>
+<table class="table table-hover text-center align-middle">
+	<thead class="table-dark">
 		<tr>
-			@foreach(DataColumn column in Model.dt.Columns)
+			@foreach (DataColumn column in Model.dt.Columns)
 			{
 				<th>@column.ColumnName</th>
 			}
@@ -20,7 +20,19 @@
 			<tr>
 				@foreach (DataColumn column in Model.dt.Columns)
 				{
-					<td>@row[column]</td>
+					if (column.ColumnName == "Password")
+					{
+						string password = new string('*', row[column].ToString().Length);
+						<td>@password</td>
+					}
+					else if (column.ColumnName == "BirthDate")
+					{
+						<td>@Convert.ToDateTime(row[column]).ToString("dd/MM/yyyy")</td>
+					}
+					else
+					{
+						<td>@row[column]</td>
+					}
 				}
 			</tr>
 		}

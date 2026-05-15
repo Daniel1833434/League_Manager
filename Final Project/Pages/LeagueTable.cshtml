@@ -1,0 +1,32 @@
+﻿@page
+@model Pesach_Project.Pages.LeagueTableModel
+@using System.Data
+@{
+    ViewData["Title"] = "LeagueTable";
+}
+<table class="table text-center align-middle">
+	<thead class="table-dark">
+		<tr>
+            <th>Rank</th>
+			@foreach (DataColumn column in Model.dt.Columns)
+			{
+				<th>@column.ColumnName</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DataRow row in Model.dt.Rows)
+		{
+			<tr>
+				<td class="fw-bold">@Model.rank</td>
+				@foreach (DataColumn column in Model.dt.Columns)
+				{
+					<td class="fw-bold">@row[column]</td>
+				}
+				@{
+					Model.rank++;
+				}
+			</tr>
+		}
+	</tbody>
+</table>

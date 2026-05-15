@@ -17,8 +17,6 @@
 
                 <select asp-for="newGame.Player1Id" id="player1" class="form-select">
 
-                    <option value="">@Model.lastGame.Player1Name</option>
-
                     @foreach (DataRow player in Model.playersDt.Rows)
                     {
                         <option value="@player["Id"]">@player["PlayerName"]</option>
@@ -33,8 +31,7 @@
                 <input asp-for="newGame.Player1Score"
                        type="number"
                        min="0"
-                       class="form-control"
-                       placeholder="@Model.lastGame.Player1Score" />
+                       class="form-control"/>
             </div>
 
             <div class="col-md-1 text-center">
@@ -46,16 +43,13 @@
                 <input asp-for="newGame.Player2Score"
                        type="number"
                        min="0"
-                       class="form-control"
-                       placeholder="@Model.lastGame.Player2Score" />
+                       class="form-control" />
             </div>
 
             <div class="col-md-3">
                 <label class="form-label fw-bold">Player 2</label>
 
                 <select asp-for="newGame.Player2Id" id="player2" class="form-select">
-
-                    <option value="">@Model.lastGame.Player2Name</option>
 
                     @foreach (DataRow player in Model.playersDt.Rows)
                     {

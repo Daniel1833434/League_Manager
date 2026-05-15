@@ -8,12 +8,11 @@ namespace Pesach_Project.Pages
     public class UpdateGameModel : PageModel
     {
         public string gameId { get; set; }
-        public Game lastGame { get; set; } = new Game();
         [BindProperty]
-        public Game newGame { get; set; }
+        public Game newGame { get; set; } = new Game();
         public DataTable playersDt { get; set; }
         public string LeagueId { get; set; }
-        public void OnGet()
+        public IActionResult OnGet()
         {
             LeagueId = HttpContext.Session.GetString("LeagueId");
             gameId = HttpContext.Session.GetString("GameId");
@@ -26,12 +25,14 @@ namespace Pesach_Project.Pages
             DataTable dt = helper.RetrieveTable(SQL, "Games");
             DataRow row = dt.Rows[0];
 
-            lastGame.Player1Id = int.Parse(row["Player1Id"].ToString());
-            lastGame.Player1Name = row["Player1Name"].ToString();
-            lastGame.Player1Score = int.Parse(row["Player1Score"].ToString());
-            lastGame.Player2Id = int.Parse(row["Player2Id"].ToString());
-            lastGame.Player2Name = row["Player2Name"].ToString();
-            lastGame.Player2Score = int.Parse(row["Player2Score"].ToString());
+            newGame.Player1Id = int.Parse(row["Player1Id"].ToString());
+            newGame.Player1Name = row["Player1Name"].ToString();
+            newGame.Player1Score = int.Parse(row["Player1Score"].ToString());
+            newGame.Player2Id = int.Parse(row["Player2Id"].ToString());
+            newGame.Player2Name = row["Player2Name"].ToString();
+            newGame.Player2Score = int.Parse(row["Player2Score"].ToString());
+
+            return Page();
         }
         public IActionResult OnPostUpdate()
         {

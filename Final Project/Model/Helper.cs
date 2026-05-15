@@ -112,11 +112,9 @@ namespace Pesach_Project.Model
             SqlConnection con = new SqlConnection(conString);
 
             // שולפים רק את השורה שרוצים למחוק
-            string SQLStr = $"SELECT * FROM {table} WHERE Id = @Id";
+            string SQLStr = $"SELECT * FROM {table} WHERE Id = {Id}";
 
             SqlCommand cmd = new SqlCommand(SQLStr, con);
-            cmd.Parameters.AddWithValue("@Id", Id);
-
             // בניית DataSet
             DataSet ds = new DataSet();
 
@@ -147,10 +145,9 @@ namespace Pesach_Project.Model
             DataSet ds = new DataSet();
 
             // 1. Delete all games with this player
-            string gamesSQL = "SELECT * FROM Games WHERE Player1Id = @Id OR Player2Id = @Id";
+            string gamesSQL = $"SELECT * FROM Games WHERE Player1Id = {int.Parse(Id)} OR Player2Id = {int.Parse(Id)}";
 
             SqlCommand gamesCmd = new SqlCommand(gamesSQL, con);
-            gamesCmd.Parameters.AddWithValue("@Id", Id);
 
             SqlDataAdapter gamesAdapter = new SqlDataAdapter(gamesCmd);
             gamesAdapter.Fill(ds, "Games");
@@ -353,6 +350,36 @@ namespace Pesach_Project.Model
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
             adapter.Update(ds, "Players");
         }
+
+        public void ZeroPlayerPoints(int PlayerId)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players ";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
+            cmd = new SqlCommand(SQLStr, con);
+
+            adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            DataRow dr = ds.Tables["Players"].Select($"Id = {PlayerId}")[0];
+            dr["PlayerPoints"] = 0;
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            adapter.Update(ds, "Players");
+        }
         public void AddPlayerGame(int PlayerId,int Games)
         {
             // התחברות למסד הנתונים
@@ -377,6 +404,36 @@ namespace Pesach_Project.Model
 
             DataRow dr = ds.Tables["Players"].Select($"Id = {PlayerId}")[0];
             dr["MatchesPlayed"] = (int)dr["MatchesPlayed"] + Games;
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            adapter.Update(ds, "Players");
+        }
+
+        public void ZeroPlayerGame(int PlayerId)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players ";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
+            cmd = new SqlCommand(SQLStr, con);
+
+            adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            DataRow dr = ds.Tables["Players"].Select($"Id = {PlayerId}")[0];
+            dr["MatchesPlayed"] = 0;
 
             // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
@@ -415,6 +472,72 @@ namespace Pesach_Project.Model
             // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
             adapter.Update(ds, "Games");
+        }
+
+        public void UpdatePlayerStats(int PlayerId)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+            ////// checking points and matches in games
+            ///// בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Games WHERE Player1Id = {PlayerId} OR Player2Id = {PlayerId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Games");
+
+            ZeroPlayerPoints(PlayerId);
+            ZeroPlayerGame(PlayerId);
+
+            foreach (DataRow row in ds.Tables["Games"].Rows)
+            {
+                if ((int)row["Player1Id"] == PlayerId)
+                {
+                    if((int)row["Player1Score"] > (int)row["Player2Score"])
+                    {
+                        AddPlayerPoints(PlayerId,3);
+                    }
+                }
+                else
+                {
+
+                    if ((int)row["Player2Score"] > (int)row["Player1Score"])
+                    {
+                        AddPlayerPoints(PlayerId, 3);
+                    }
+                }
+
+                if ((int)row["Player1Score"] == (int)row["Player2Score"])
+                {
+                    AddPlayerPoints(PlayerId, 1);
+                }
+                AddPlayerGame(PlayerId, 1);
+            }
+        }
+        public void UpdateAllPlayersStatsFromLeague(int leagueId)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+            ///// בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players WHERE LeagueId = {leagueId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            foreach (DataRow row in ds.Tables["Players"].Rows)
+            {
+                UpdatePlayerStats((int)row["Id"]);
+            }
+
         }
     }
 }

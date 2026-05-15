@@ -1,0 +1,212 @@
+﻿@page
+@model Pesach_Project.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+<h1 class="display-5 mb-4">👤 Profile</h1>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="mb-0">Update Profile</h3>
+                </div>
+
+                <div class="card-body p-4">
+                    <form method="post" onsubmit="return validateForm()">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">User Name</label>
+                            <input asp-for="NewUser.UserName" id="userName" class="form-control" oninput="userNameVal()" />
+                            <div id="userNameMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">First Name</label>
+                            <input asp-for="NewUser.FirstName" id="firstName" class="form-control" oninput="firstNameVal()" />
+                            <div id="firstNameMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Last Name</label>
+                            <input asp-for="NewUser.LastName" id="lastName" class="form-control" oninput="lastNameVal()" />
+                            <div id="lastNameMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Password</label>
+                            <input asp-for="NewUser.Password" id="password" type="password" class="form-control" oninput="passwordVal()" />
+                            <div id="passwordMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Confirm Password</label>
+                            <input type="password" id="confirm" class="form-control" oninput="confirmFun()" />
+                            <div id="confirmMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email</label>
+                            <input asp-for="NewUser.Email" id="email" class="form-control" oninput="confirmemail()" />
+                            <div id="emailMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Birth Date</label>
+                            <input asp-for="NewUser.BirthDate" id="birthDate" type="date" class="form-control" oninput="birthDateVal()" />
+                            <div id="birthDateMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Phone</label>
+                            <input asp-for="NewUser.PhoneNum" id="phone" class="form-control" oninput="confirmPhone()" />
+                            <div id="phoneMsg" class="text-danger small"></div>
+                        </div>
+
+                        <div class="text-danger small mb-2">@Model.msg</div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Update details</button>
+                            <button type="reset" class="btn btn-light text-muted" onclick="clearMsgs()">Clear</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var isUserNameValid = userNameVal();
+        var isPasswordValid = passwordVal();
+        var isConfirmValid = confirmFun();
+        var isEmailValid = confirmemail();
+        var isPhoneValid = confirmPhone();
+        var isBirthDateValid = birthDateVal();
+        var isFirstNameValid = firstnameVal();
+        var isLastNameValid = lastnameVal();
+
+        return isUserNameValid && isPasswordValid && isConfirmValid && isEmailValid && isPhoneValid && isBirthDateValid && isFirstNameValid && isLastNameValid;
+    }
+
+    function isLetter(ch) {
+        return (ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z");
+    }
+        function birthDateVal() {
+        var birthDate = document.getElementById("birthDate").value;
+        var msgBox = document.getElementById("birthDateMsg");
+
+        if (birthDate.length == 0) {
+            msgBox.innerHTML = "You must enter birth date";
+            return false;
+        }
+
+        msgBox.innerHTML = "";
+        return true;
+    }
+    function userNameVal() {
+        var userName = document.getElementById("userName").value;
+        var msgBox = document.getElementById("userNameMsg");
+        if (userName.length == 0) {
+            msgBox.innerHTML = "You must enter user name";
+            return false;
+        }
+        if (!isLetter(userName[0])) {
+            msgBox.innerHTML = "User name must start with a letter";
+            return false;
+        }
+        msgBox.innerHTML = "";
+        return true;
+    }
+    function firstnameVal() {
+        var firstName = document.getElementById("firstName").value;
+        var msgBox = document.getElementById("firstNameMsg");
+        if (firstName.length == 0) {
+            msgBox.innerHTML = "You must enter first name";
+            return false;
+        }
+        if (!isLetter(firstName[0])) {
+            msgBox.innerHTML = "First name must start with a letter";
+            return false;
+        }
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function lastnameVal() {
+        var lastName = document.getElementById("lastName").value;
+        var msgBox = document.getElementById("lastNameMsg");
+        if (lastName.length == 0) {
+            msgBox.innerHTML = "You must enter last name";
+            return false;
+        }
+        if (!isLetter(lastName[0])) {
+            msgBox.innerHTML = "Last name must start with a letter";
+            return false;
+        }
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function passwordVal() {
+        var pass = document.getElementById("password").value;
+        var msgBox = document.getElementById("passwordMsg");
+        var specialChar = /[@@!#\$%^&*()-+]/;
+
+        if (pass.length < 7) {
+            msgBox.innerHTML = "Password must be at least 7 characters";
+            return false;
+        }
+        if (!specialChar.test(pass)) {
+            msgBox.innerHTML = "Must contain one special character";
+            return false;
+        }
+        msgBox.innerHTML = "";
+
+        return true;
+    }
+
+    function confirmFun() {
+        var pass = document.getElementById("password").value;
+        var confirm = document.getElementById("confirm").value;
+        var msgBox = document.getElementById("confirmMsg");
+        if (pass != confirm) {
+            msgBox.innerHTML = "Passwords do not match";
+            return false;
+        }
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function confirmPhone() {
+        var phone = document.getElementById("phone").value;
+        var msgBox = document.getElementById("phoneMsg");
+        var reg = /^05\d-?\d{7}$/;
+        if (!reg.test(phone)) {
+            msgBox.innerHTML = "Invalid Israeli phone number";
+            return false;
+        }
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function confirmemail() {
+        var email = document.getElementById("email").value;
+        var msgBox = document.getElementById("emailMsg");
+        var reg = /^\w+([\.-]?\w+)*@@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+        if (!reg.test(email)) {
+            msgBox.innerHTML = "Invalid email format";
+            return false;
+        }
+        msgBox.innerHTML = "";
+        return true;
+    }
+
+    function clearMsgs() {
+        var msgs = document.getElementsByClassName("text-danger");
+        for(var i=0; i<msgs.length; i++) { msgs[i].innerHTML = ""; }
+    }
+</script>

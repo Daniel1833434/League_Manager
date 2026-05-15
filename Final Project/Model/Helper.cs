@@ -244,14 +244,49 @@ namespace Pesach_Project.Model
             adapter.Fill(ds, "Players");
 
             DataRow dr = ds.Tables["Players"].Select($"Id = {playerId}")[0];
+            UpdateGamesPlayerName(newName, dr["PlayerName"].ToString(), LeagueId.ToString());
             dr["PlayerName"] = newName;
 
             // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+           
             int n = adapter.Update(ds, "Players");
             return n;
         }
+        public void UpdateGamesPlayerName(string NewPlayerName, string OldPlayerName, string LeagueId)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
 
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Games WHERE LeagueId = {LeagueId} AND (Player1Name = '{OldPlayerName}' OR Player2Name = '{OldPlayerName}')";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Games");
+
+            cmd = new SqlCommand(SQLStr, con);
+
+            foreach (DataRow dr in ds.Tables["Games"].Rows)
+            {
+                if (dr["Player1Name"].ToString() == OldPlayerName)
+                {
+                    dr["Player1Name"] = NewPlayerName;
+                }
+                if (dr["Player2Name"].ToString() == OldPlayerName)
+                {
+                    dr["Player2Name"] = NewPlayerName;
+                }
+            }
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            adapter.Update(ds, "Games");
+        }
         public int UpdateLeagueName(int LeagueId,int OwnerId ,string newName)
         {
             // התחברות למסד הנתונים
@@ -281,6 +316,37 @@ namespace Pesach_Project.Model
 
             DataRow dr = ds.Tables["Leagues"].Select($"Id = {LeagueId}")[0];
             dr["LeagueName"] = newName;
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            int n = adapter.Update(ds, "Leagues");
+            return n;
+        }
+
+        public int UpdateLeagueMaxPlayers(int LeagueId, int newMaxPlayers)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Leagues";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Leagues");
+
+            SQLStr = $"SELECT * FROM Leagues ";
+            cmd = new SqlCommand(SQLStr, con);
+
+            adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Leagues");
+
+            DataRow dr = ds.Tables["Leagues"].Select($"Id = {LeagueId}")[0];
+            dr["MaxPlayers"] = newMaxPlayers;
 
             // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
@@ -538,6 +604,39 @@ namespace Pesach_Project.Model
                 UpdatePlayerStats((int)row["Id"]);
             }
 
+        }
+        public int UpdateUsers(User user, string table)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM {table}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, table);
+
+            // בניית השורה להוספה
+            DataRow dr = ds.Tables[table].Select($"Id = {user.Id}")[0];
+            ;
+            dr["UserName"] = user.UserName;
+            dr["FirstName"] = user.FirstName;
+            dr["LastName"] = user.LastName;
+            dr["Password"] = user.Password;
+            dr["Email"] = user.Email;
+            dr["PhoneNum"] = user.PhoneNum;
+            dr["BirthDate"] = user.BirthDate;
+            dr["Admin"] = false;
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            int n = adapter.Update(ds, table);
+            return n; 
         }
     }
 }

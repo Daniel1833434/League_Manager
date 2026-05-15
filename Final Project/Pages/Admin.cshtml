@@ -1,0 +1,40 @@
+﻿@page
+@model Pesach_Project.Pages.WatchUsersModel
+@using System.Data
+@{
+	ViewData["Title"] = "Admin";
+}
+<h1>Watch Users</h1>
+<table class="table table-hover text-center align-middle">
+	<thead class="table-dark">
+		<tr>
+			@foreach (DataColumn column in Model.dt.Columns)
+			{
+				<th>@column.ColumnName</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DataRow row in Model.dt.Rows)
+		{
+			<tr>
+				@foreach (DataColumn column in Model.dt.Columns)
+				{
+					if (column.ColumnName == "Password")
+					{
+						string password = new string('*', row[column].ToString().Length);
+						<td>@password</td>
+					}
+					else if (column.ColumnName == "BirthDate")
+					{
+						<td>@Convert.ToDateTime(row[column]).ToString("dd/MM/yyyy")</td>
+					}
+					else
+					{
+						<td>@row[column]</td>
+					}
+				}
+			</tr>
+		}
+	</tbody>
+</table>

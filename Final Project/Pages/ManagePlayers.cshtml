@@ -5,7 +5,6 @@
     ViewData["Title"] = "ManagePlayers";
 }
 <h2>👥 Players</h2>
-
 <form method="post" asp-page-handler="Add"  class="mb-3">
     <input type="hidden" asp-for="LeagueId" />
 
@@ -18,6 +17,28 @@
     </button>
 </form>
 <div class="text-danger small mb-2">@Model.msg</div>
+
+<div class="card shadow-sm mb-4">
+	<div class="card-body d-flex justify-content-between align-items-center">
+		<div>
+			<h5 class="card-title mb-1">⛹️ Max Players</h5>
+			<p class="card-text text-muted mb-0">
+				Current max players: <strong>@Model.MaxPlayers</strong>
+			</p>
+		</div>
+
+		<form method="post" asp-page-handler="ChangeMaxPlayers">
+			<input type="hidden" name="MaxPlayers" />
+
+			<button type="submit"
+					onclick="return askMaxPlayers(this)"
+					class="btn btn-warning">
+				✏️ Change Max Players
+			</button>
+		</form>
+	</div>
+</div>
+
 
 <table class="table text-center align-middle">
 	<thead class="table-dark">
@@ -77,5 +98,37 @@
 
 		form.querySelector('input[name="NewName"]').value = newName;
 
+	}
+
+	function askMaxPlayers(button) {
+		let newMaxPlayers = prompt("Enter the new maximum number of players:");
+
+		if (newMaxPlayers == null) {
+			return false;
+		}
+
+		if (newMaxPlayers.length == 0) {
+			alert("You must enter max players");
+			return false;
+		}
+
+		if (newMaxPlayers < 2) {
+			alert("Max players must be at least 2");
+			return false;
+		}
+
+		if (newMaxPlayers > 100) {
+			alert("Max players cannot be more than 100");
+			return false;
+		}
+		if (@Model.CurrentPlayers > newMaxPlayers) {
+			alert("Max players cannot be less than current number of players (" + @Model.CurrentPlayers + ")");
+			return false;
+		}
+		newMaxPlayers = newMaxPlayers.trim();
+		let form = button.closest("form");
+
+		form.querySelector('input[name="MaxPlayers"]').value = newMaxPlayers;
+		return true;
 	}
 </script>

@@ -29,11 +29,8 @@ namespace Pesach_Project.Pages
             string playersSQL = $"SELECT Id, PlayerName FROM Players WHERE LeagueId = {LeagueId}";
             playersDt = helper.RetrieveTable(playersSQL, "Players");
 
-            if (LeagueId != null)
-            { 
-                string SQL = $"SELECT Id,Player1Name, Player1Score, Player2Name, Player2Score FROM Games WHERE LeagueId = {int.Parse(LeagueId)}";
-                dt = helper.RetrieveTable(SQL, "Games");
-            }
+            string SQL = $"SELECT Id,Player1Name, Player1Score, Player2Name, Player2Score FROM Games WHERE LeagueId = {int.Parse(LeagueId)}";
+            dt = helper.RetrieveTable(SQL, "Games");
             return Page();
         }
         public IActionResult OnPostAddGame()

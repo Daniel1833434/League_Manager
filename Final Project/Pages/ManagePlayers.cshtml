@@ -2,24 +2,24 @@
 @model Pesach_Project.Pages.ManagePlayersModel
 @using System.Data
 @{
-    ViewData["Title"] = "ManagePlayers";
+	ViewData["Title"] = "ManagePlayers";
 }
 <h2>👥 Players</h2>
-<form method="post" asp-page-handler="Add"  class="mb-3">
-    <input type="hidden" asp-for="LeagueId" />
+<form method="post" asp-page-handler="Add" class="mb-3">
+	<input type="hidden" asp-for="LeagueId" />
 
-    <input asp-for="NewPlayer.PlayerName"
-           class="form-control mb-2"
-           placeholder="Enter player name" />
+	<input asp-for="NewPlayer.PlayerName"
+		   class="form-control mb-2"
+		   placeholder="Enter player name" />
 
-    <button type="submit" class="btn btn-primary">
-        Add Player
-    </button>
+	<button type="submit" class="btn btn-primary">
+		Add Player
+	</button>
 </form>
 <div class="text-danger small mb-2">@Model.msg</div>
 
-<div class="card shadow-sm mb-4">
-	<div class="card-body d-flex justify-content-between align-items-center">
+<div class="card lm-form-card mb-4">
+	<div class="lm-form-body d-flex justify-content-between align-items-center">
 		<div>
 			<h5 class="card-title mb-1">⛹️ Max Players</h5>
 			<p class="card-text text-muted mb-0">
@@ -40,8 +40,8 @@
 </div>
 
 
-<table class="table text-center align-middle">
-	<thead class="table-dark">
+<table class="table lm-table">
+	<thead>
 		<tr>
 			<th>Player Name</th>
 			<th>Actions</th>
@@ -52,8 +52,8 @@
 		{
 			<tr>
 				<td class="fw-bold">@row["PlayerName"]</td>
-				<td>
-					<form method="post" asp-page-handler="ChangeName" class="d-inline">
+				<td class="lm-actions">
+					<form method="post" asp-page-handler="ChangeName">
 						<input type="hidden" name="PlayerId" value="@row["Id"]" />
 						<input type="hidden" name="NewName" />
 
@@ -64,7 +64,7 @@
 						</button>
 					</form>
 
-					<form method="post" asp-page-handler="Delete" class="d-inline">
+					<form method="post" asp-page-handler="Delete">
 						<input type="hidden" name="PlayerId" value="@row["Id"]" />
 
 						<button type="submit" class="btn btn-danger btn-sm">
@@ -84,7 +84,7 @@
 		let newName = prompt("Enter the new player name:");
 
 		if (newName == null) {
-			return false; 
+			return false;
 		}
 
 		newName = newName.trim();

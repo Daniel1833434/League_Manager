@@ -37,8 +37,9 @@ namespace Pesach_Project.Pages
         {
             Helper helper = new Helper();
             helper.DeleteRow(LeagueId, "Leagues");
-            return RedirectToPage("/Index");
-            
+            HttpContext.Session.SetString("LeagueName", "");
+            HttpContext.Session.SetString("LeagueId", "");
+            return RedirectToPage("/Index");   
         }
         public IActionResult OnPostManage()
         {

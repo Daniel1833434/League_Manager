@@ -8,8 +8,8 @@
 
 <h1 class="display-5 mb-4">🏆 Manage Games</h1>
 
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
+<div class="card lm-form-card mb-4">
+    <div class="lm-form-body">
         <h4 class="card-title mb-3">➕ Add New Game</h4>
 
         <form method="post" asp-page-handler="AddGame" class="row g-3 align-items-end" onsubmit="return validateGame()">
@@ -81,8 +81,15 @@
     </div>
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
+<form method="post" asp-page-handler="GenerateGames" class="row g-3 align-items-end">
+    <button type="submit" class="btn btn-primary w-100">
+        Generate Games for All Players
+    </button>
+    <p class="alert-danger mt-3 mb-0">This will delete all existing games!</p>
+</form>
+
+<div class="card lm-form-card">
+    <div class="lm-form-body">
         <h4 class="card-title mb-3">⛹️ Games List</h4>
 
         @if (Model.dt.Rows.Count == 0)
@@ -93,8 +100,8 @@
         }
         else
         {
-            <table class="table text-center align-middle">
-                <thead class="table-dark">
+            <table class="table lm-table">
+                <thead>
                     <tr>
                         <th>Player 1</th>
                         <th>Score</th>
@@ -143,15 +150,15 @@
                                     <span class="badge bg-success">🏆 @result won</span>
                                 }
                             </td>
-                            <td>
-                                <form method="post" asp-page-handler="Update" class="d-inline">
+                            <td class="lm-actions">
+                                <form method="post" asp-page-handler="Update">
                                     <input type="hidden" name="gameId" value="@row["Id"]" />
 
                                     <button type="submit" class="btn btn-warning btn-sm">
                                         Update
                                     </button>
                                 </form>
-                                <form method="post" asp-page-handler="Delete" class="d-inline">
+                                <form method="post" asp-page-handler="Delete">
                                     <input type="hidden" name="gameId" value="@row["Id"]" />
 
                                     <button type="submit" class="btn btn-danger btn-sm">
@@ -160,7 +167,7 @@
                                 </form>
                             </td>
                         </tr>
-                    
+
                     }
                 </tbody>
             </table>

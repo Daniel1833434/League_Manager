@@ -4,21 +4,23 @@
 @{
 	ViewData["Title"] = "Admin";
 }
-<h1>Watch Users</h1>
-<table class="table table-hover text-center align-middle">
+<p class="display-4">Admin👑</p>
+<h1>Users</h1>
+<table class="table text-center align-middle">
 	<thead class="table-dark">
 		<tr>
-			@foreach (DataColumn column in Model.dt.Columns)
+			@foreach (DataColumn column in Model.Usersdt.Columns)
 			{
 				<th>@column.ColumnName</th>
 			}
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (DataRow row in Model.dt.Rows)
+		@foreach (DataRow row in Model.Usersdt.Rows)
 		{
 			<tr>
-				@foreach (DataColumn column in Model.dt.Columns)
+				@foreach (DataColumn column in Model.Usersdt.Columns)
 				{
 					if (column.ColumnName == "Password")
 					{
@@ -34,6 +36,126 @@
 						<td>@row[column]</td>
 					}
 				}
+				@if(@row["Admin"].ToString() == "False"){
+					<td class="lm-actions">
+						<form method="post" asp-page-handler="MakeAdmin">
+							<input type="hidden" name="UserId" value="@row["Id"]" />
+							<button type="submit" class="btn btn-success btn-sm">
+								Make Admin
+							</button>
+						</form>
+                    </td>
+
+					<td class="lm-actions">
+						<form method="post" asp-page-handler="DeleteUser">
+							<input type="hidden" name="UserId" value="@row["Id"]" />
+
+							<button type="submit" class="btn btn-danger btn-sm">
+								Delete
+							</button>
+						</form>
+					</td>
+				}
+			</tr>
+
+		}
+	</tbody>
+</table>
+
+<h1>Leagues</h1>
+<table class="table text-center align-middle">
+	<thead class="table-dark">
+		<tr>
+			@foreach (DataColumn column in Model.Leaguesdt.Columns)
+			{
+				<th>@column.ColumnName</th>
+			}
+            <th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DataRow row in Model.Leaguesdt.Rows)
+		{
+			<tr>
+				@foreach (DataColumn column in Model.Leaguesdt.Columns)
+				{
+					<td>@row[column]</td>
+				}
+				<td class="lm-actions">
+					<form method="post" asp-page-handler="DeleteLeague">
+						<input type="hidden" name="LeagueId" value="@row["Id"]" />
+
+						<button type="submit" class="btn btn-danger btn-sm">
+							Delete
+						</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<h1>Players</h1>
+<table class="table text-center align-middle">
+	<thead class="table-dark">
+		<tr>
+			@foreach (DataColumn column in Model.Playersdt.Columns)
+			{
+				<th>@column.ColumnName</th>
+			}
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DataRow row in Model.Playersdt.Rows)
+		{
+			<tr>
+				@foreach (DataColumn column in Model.Playersdt.Columns)
+				{
+					<td>@row[column]</td>
+				}
+				<td class="lm-actions">
+					<form method="post" asp-page-handler="DeletePlayer">
+						<input type="hidden" name="PlayerId" value="@row["Id"]" />
+
+						<button type="submit" class="btn btn-danger btn-sm">
+							Delete
+						</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<h1>Games</h1>
+<table class="table text-center align-middle">
+	<thead class="table-dark">
+		<tr>
+			@foreach (DataColumn column in Model.Gamessdt.Columns)
+			{
+				<th>@column.ColumnName</th>
+			}
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DataRow row in Model.Gamessdt.Rows)
+		{
+			<tr>
+				@foreach (DataColumn column in Model.Gamessdt.Columns)
+				{
+					<td>@row[column]</td>
+				}
+				<td class="lm-actions">
+					<form method="post" asp-page-handler="DeleteGame">
+						<input type="hidden" name="gameId" value="@row["Id"]" />
+
+						<button type="submit" class="btn btn-danger btn-sm">
+							Delete
+						</button>
+					</form>
+				</td>
 			</tr>
 		}
 	</tbody>

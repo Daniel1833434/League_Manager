@@ -8,7 +8,18 @@ namespace Pesach_Project.Pages
 {
     public class WatchUsersModel : PageModel
     {
-        public DataTable dt { get; set; }
+        public DataTable Usersdt { get; set; }
+        public DataTable Leaguesdt { get; set; }
+        public DataTable Playersdt { get; set; }
+        public DataTable Gamessdt { get; set; }
+        [BindProperty]
+        public string PlayerId { get; set; }
+        [BindProperty]
+        public string UserId { get; set; }
+        [BindProperty]
+        public string gameId { get; set; }
+        [BindProperty]
+        public string LeagueId { get; set; }
         public IActionResult OnGet()
         {
             if (HttpContext.Session.GetString("Admin") != "True")
@@ -17,8 +28,49 @@ namespace Pesach_Project.Pages
             }
             Helper helper = new Helper();
             string SQL = "SELECT * FROM Users";
-            dt  = helper.RetrieveTable(SQL, "Users");
+            Usersdt  = helper.RetrieveTable(SQL, "Users");
+
+            SQL = "SELECT * FROM Leagues";
+            Leaguesdt = helper.RetrieveTable(SQL, "Leagues");
+
+            SQL = "SELECT * FROM Players";
+            Playersdt = helper.RetrieveTable(SQL, "Players");
+
+            SQL = "SELECT * FROM Games";
+            Gamessdt = helper.RetrieveTable(SQL, "Games");
+
             return Page();
+        }
+        public IActionResult OnPostDeleteUser()
+        {
+            Helper helper = new Helper();
+            helper.DeleteRow(UserId, "Users");
+            return RedirectToPage("/Admin");
+        }
+        public IActionResult OnPostMakeAdmin()
+        {
+            Helper helper = new Helper();
+            helper.MakeAdmin(int.Parse(UserId), "Users");
+            return RedirectToPage("/Admin");
+        }
+        public IActionResult OnPostDeleteLeague()
+        {
+            Helper helper = new Helper();
+            helper.DeleteRow(LeagueId, "Leagues");
+            return RedirectToPage("/Admin");
+        }
+        public IActionResult OnPostDeletePlayer()
+        {
+            Helper helper = new Helper();
+            helper.DeletePlayer(PlayerId, "Players");
+            return RedirectToPage("/Admin");
+
+        }
+        public IActionResult OnPostDeleteGame()
+        {
+            Helper helper = new Helper();
+            helper.DeleteRow(gameId, "Games");
+            return RedirectToPage("/Admin");
         }
     }
 }

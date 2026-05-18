@@ -6,12 +6,12 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-primary text-white text-center py-3">
+            <div class="card lm-form-card">
+                <div class="lm-form-header">
                     <h3 class="mb-0">Welcome Back</h3>
                     <p class="small mb-0">Log in to your account!</p>
                 </div>
-                <div class="card-body p-4">
+                <div class="lm-form-body">
                     <form method="post" onsubmit="return validateLogin()">
 
                         <div class="mb-3">
@@ -33,7 +33,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="card-footer text-center py-3 bg-light">
+                <div class="lm-form-footer">
                     <p class="mb-0">New here? <a asp-page="/Registration" class="text-decoration-none fw-bold">Sign up and create an account</a></p>
                 </div>
             </div>
@@ -85,4 +85,3 @@
         for(var i=0; i<msgs.length; i++) { msgs[i].innerHTML = ""; }
     }
 </script>
-

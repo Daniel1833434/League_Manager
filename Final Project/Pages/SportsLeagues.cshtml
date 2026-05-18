@@ -1,0 +1,73 @@
+﻿@page
+@model Pesach_Project.Pages.SportsLeaguesModel
+@{
+    ViewData["Title"] = "Sports Leagues";
+}
+
+<h1 class="display-5 mb-4">⚽ Premier League 2024 - 2025 Table</h1>
+
+<table class="table lm-table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Team</th>
+            <th>Played</th>
+            <th>Wins</th>
+            <th>Draws</th>
+            <th>Losses</th>
+            <th>GF</th>
+            <th>GA</th>
+            <th>GD</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var row in Model.FootballTable)
+        {
+            <tr>
+                <td class="fw-bold">@row.Rank</td>
+                <td class="fw-bold">@row.TeamName</td>
+                <td>@row.Played</td>
+                <td>@row.Wins</td>
+                <td>@row.Draws</td>
+                <td>@row.Losses</td>
+                <td>@row.GoalsFor</td>
+                <td>@row.GoalsAgainst</td>
+                <td>@row.GoalDifference</td>
+                <td class="fw-bold">@row.Points</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h1 class="display-5 mb-4 mt-5">🏀 Nba 2024 - 2025 Table</h1>
+
+<table class="table lm-table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Team</th>
+            <th>Played</th>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Points For</th>
+            <th>Points Against</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var row in Model.BasketballTable)
+        {
+            <tr>
+                <td class="fw-bold">@row.Rank</td>
+                <td class="fw-bold">@row.TeamName</td>
+                <td>@row.Played</td>
+                <td>@row.Wins</td>
+                <td>@row.Losses</td>
+                <td>@row.PointsFor</td>
+                <td>@row.PointsAgainst</td>
+            </tr>
+        }
+    </tbody>
+</table>

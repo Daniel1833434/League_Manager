@@ -2,14 +2,14 @@
 @model Pesach_Project.Pages.LeagueTableModel
 @using System.Data
 @{
-    ViewData["Title"] = "LeagueTable";
+	ViewData["Title"] = "LeagueTable";
 }
 <h1 class="display-5 mb-4">📊 Table</h1>
 
-<table class="table text-center align-middle">
-	<thead class="table-dark">
+<table class="table lm-table">
+	<thead>
 		<tr>
-            <th>Rank</th>
+			<th>Rank</th>
 			@foreach (DataColumn column in Model.dt.Columns)
 			{
 				<th>@column.ColumnName</th>

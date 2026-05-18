@@ -33,6 +33,12 @@
                         }
                         else
                         {
+                            if (Context.Session.GetString("LeagueId") != null && Context.Session.GetString("LeagueName") != "")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/ManageLeagues">ManageLeague</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
                             </li>
@@ -42,6 +48,9 @@
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/SportsLeagues">Sports Leagues</a>
                         </li>
                         @if (Context.Session.GetString("Admin") == "True")
                         {

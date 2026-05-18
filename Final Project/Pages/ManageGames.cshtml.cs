@@ -53,5 +53,14 @@ namespace Pesach_Project.Pages
             HttpContext.Session.SetString("GameId", gameId);
             return RedirectToPage("/UpdateGame");
         }
+
+        public IActionResult OnPostGenerateGames()
+        {
+            LeagueId = HttpContext.Session.GetString("LeagueId");
+            Helper helper = new Helper();
+            helper.DeleteAllGamesFromLeague(int.Parse(LeagueId));
+            helper.GenerateGamesToLeague(int.Parse(LeagueId));
+            return RedirectToPage("/ManageGames");
+        }
     }
 }

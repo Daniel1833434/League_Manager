@@ -78,7 +78,7 @@ namespace Pesach_Project.Model
             SqlConnection con = new SqlConnection(conString);
 
             // בניית פקודת SQL
-            string SQLStr = $"SELECT * FROM {table} WHERE LeagueName Like '{league.LeagueName}'";
+            string SQLStr = $"SELECT * FROM {table} WHERE OwnerID = {league.OwnerId} AND LeagueName = '{league.LeagueName}'";
             SqlCommand cmd = new SqlCommand(SQLStr, con);
 
             // בניית DataSet
@@ -637,6 +637,94 @@ namespace Pesach_Project.Model
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
             int n = adapter.Update(ds, table);
             return n; 
+        }
+        public int MakeAdmin(int userId, string table)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM {table}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, table);
+
+            // בניית השורה להוספה
+            DataRow dr = ds.Tables[table].Select($"Id = {userId}")[0];
+            ;
+            dr["Admin"] = true;
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            int n = adapter.Update(ds, table);
+            return n;
+        }
+        public int DeleteAllGamesFromLeague(int leagueId)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Games WHERE LeagueId = {leagueId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Games");
+
+            // בניית השורה להוספה
+            foreach (DataRow dr in ds.Tables["Games"].Rows)
+            {
+                dr.Delete();
+            }
+
+            // עדכון הדאטה סט בבסיס הנתונים
+            SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+            int n = adapter.Update(ds, "Games");
+            return n;
+        }
+        public void GenerateGamesToLeague(int leagueId)
+        {
+            // התחברות למסד הנתונים
+            SqlConnection con = new SqlConnection(conString);
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players WHERE LeagueId = {leagueId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
+
+            // בניית DataSet
+            DataSet ds = new DataSet();
+
+            // טעינת סכימת הנתונים
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, "Players");
+
+            int playersCount = ds.Tables["Players"].Rows.Count;
+            // בניית השורה להוספה
+            for (int distance = 1; distance < playersCount; distance++)
+            {
+               for(int i = 0; i + distance< playersCount; i++)
+               {
+                    int j = i + distance;
+                    Game game = new Game();
+                    game.Player1Id = (int)ds.Tables["Players"].Rows[i]["Id"];
+                    game.Player2Id = (int)ds.Tables["Players"].Rows[j]["Id"];
+                    game.Player1Name = ds.Tables["Players"].Rows[i]["PlayerName"].ToString();
+                    game.Player2Name = ds.Tables["Players"].Rows[j]["PlayerName"].ToString();
+                    game.Player1Score = 0;
+                    game.Player2Score = 0;
+                    game.LeagueId = leagueId;
+                    InsertToGames(game, "Games");
+                }
+            }
         }
     }
 }

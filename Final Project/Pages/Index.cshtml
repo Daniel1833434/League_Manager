@@ -2,15 +2,16 @@
 @model IndexModel
 @using System.Data
 @{
-    ViewData["Title"] = "Home page";
+	ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    @if( Model.UserName != null){
+	@if (Model.UserName != null)
+	{
 
-        <p class="display-4">Welcome @Model.UserName! </p>
-		<table class="table text-center align-middle">
-			<thead class="table-dark">
+		<p class="display-4">Welcome @Model.UserName! </p>
+		<table class="table lm-table">
+			<thead>
 				<tr>
 					@foreach (DataColumn column in Model.dt.Columns)
 					{
@@ -33,10 +34,10 @@
 							{
 								continue;
 							}
-							<td class="fw-bold">@row[column]</td>
+							<td>@row[column]</td>
 						}
-						<td>
-							<form method="post" asp-page-handler="Manage" class="d-inline">
+						<td class="lm-actions">
+							<form method="post" asp-page-handler="Manage">
 								<input type="hidden" name="LeagueId" value="@row["Id"]" />
 								<input type="hidden" name="LeagueName" value="@row["LeagueName"]" />
 
@@ -45,7 +46,7 @@
 								</button>
 							</form>
 
-							<form method="post" asp-page-handler="Delete" class="d-inline">
+							<form method="post" asp-page-handler="Delete">
 								<input type="hidden" name="LeagueId" value="@row["Id"]" />
 
 								<button type="submit" class="btn btn-danger btn-sm">
@@ -58,10 +59,10 @@
 			</tbody>
 		</table>
 		<a class="btn btn-primary px-4 ms-2" asp-page="/CreateLeague">CreateLeague</a>
-    }
-    else
-    {
+	}
+	else
+	{
 		<h1 class="display-4">Welcome</h1>
-        <p>Please <a asp-page="/Login" class="btn btn-primary px-4 ms-2">Login</a> to continue.</p>
-    }
+		<p>Please <a asp-page="/Login" class="btn btn-primary px-4 ms-2">Login</a> to continue.</p>
+	}
 </div>

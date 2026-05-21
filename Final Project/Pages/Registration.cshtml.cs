@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -25,7 +26,9 @@ namespace Pesach_Project.Pages
                 msg = "Username already taken.";
                 return Page();
             }
-
+            HttpContext.Session.SetString("UserName", NewUser.UserName);
+            HttpContext.Session.SetString("UserId", NewUser.Id.ToString()); 
+            HttpContext.Session.SetString("Admin", NewUser.Admin.ToString()); 
             return RedirectToPage("/Index");
         }
     }

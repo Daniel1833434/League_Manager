@@ -41,6 +41,12 @@ namespace Pesach_Project.Pages
 
             return Page();
         }
+        public IActionResult OnPostUpdateUser()
+        {
+            Helper helper = new Helper();
+            HttpContext.Session.SetString("UserIdUpdate", UserId);
+            return RedirectToPage("/Profile", new { AdminChanging = true });
+        }
         public IActionResult OnPostDeleteUser()
         {
             Helper helper = new Helper();

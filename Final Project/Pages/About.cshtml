@@ -3,4 +3,59 @@
 @{
     ViewData["Title"] = "About";
 }
-<p class="display-3">About 🏀⚽🎾</p>
+
+<div class="col-md-10 mx-auto">
+    <h1 class="display-5 fw-bold mb-3">About League Manager</h1>
+    <p class="lead text-muted mb-4">
+        League Manager is a web application that helps you organize small sports leagues —
+        from creating a league and adding players to recording scores and viewing the standings table.
+    </p>
+
+    <div class="card lm-form-card mb-4">
+        <div class="lm-form-header">
+            <h2 class="h5 mb-0">What You Can Do</h2>
+        </div>
+        <div class="lm-form-body text-start">
+            <ul class="mb-0">
+                <li class="mb-2"><strong>Create leagues</strong> — set a name and maximum number of players.</li>
+                <li class="mb-2"><strong>Manage players</strong> — add, rename, or remove players from your league.</li>
+                <li class="mb-2"><strong>Track games</strong> — add matches manually or generate a full round-robin schedule.</li>
+                <li class="mb-2"><strong>Update scores</strong> — enter results and keep every game up to date.</li>
+                <li><strong>View the league table</strong> — see points and matches played, sorted by standings.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card lm-form-card mb-4">
+        <div class="lm-form-header">
+            <h2 class="h5 mb-0">How Scoring Works</h2>
+        </div>
+        <div class="lm-form-body text-start">
+            <p class="mb-2">Standings are calculated automatically from game results:</p>
+            <ul class="mb-0">
+                <li class="mb-2"><strong>Win</strong> — 3 points</li>
+                <li class="mb-2"><strong>Draw</strong> — 1 point for each player</li>
+                <li><strong>Loss</strong> — 0 points</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card lm-form-card mb-4">
+        <div class="lm-form-header">
+            <h2 class="h5 mb-0">Getting Started</h2>
+        </div>
+        <div class="lm-form-body text-start">
+            <ol class="mb-0">
+                <li class="mb-2">Register for an account or log in.</li>
+                <li class="mb-2">Create a new league from the home page.</li>
+                <li class="mb-2">Select <strong>Manage</strong> on your league and add players.</li>
+                <li class="mb-2">Add games or use <strong>Generate Games</strong> to create all matchups.</li>
+                <li>Enter scores and open the league table to see current standings.</li>
+            </ol>
+        </div>
+    </div>
+
+    <p class="text-muted mb-0">
+        You can also visit <a asp-page="/SportsLeagues">Sports Leagues</a> to view live football standings from professional leagues.
+    </p>
+</div>

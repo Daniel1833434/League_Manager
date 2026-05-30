@@ -631,7 +631,6 @@ namespace Pesach_Project.Model
             dr["Email"] = user.Email;
             dr["PhoneNum"] = user.PhoneNum;
             dr["BirthDate"] = user.BirthDate;
-            dr["Admin"] = false;
 
             // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);

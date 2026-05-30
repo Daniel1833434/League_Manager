@@ -27,6 +27,7 @@ namespace Pesach_Project.Pages
             {
                 HttpContext.Session.SetString("UserName", Username);
                 HttpContext.Session.SetString("UserId", dt.Rows[0]["Id"].ToString());
+                HttpContext.Session.SetString("UserIdUpdate", dt.Rows[0]["Id"].ToString());
                 HttpContext.Session.SetString("Admin", dt.Rows[0]["Admin"].ToString());
                 return RedirectToPage("/Index");
             }

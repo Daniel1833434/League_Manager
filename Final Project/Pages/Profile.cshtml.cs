@@ -12,9 +12,13 @@ namespace Pesach_Project.Pages
         public User NewUser { get; set; } = new User();
         public string msg { get; set; } = string.Empty;
         public string Id { get; set; }
-        public IActionResult OnGet()
+        public IActionResult OnGet(bool AdminChanging = false)
         {
-            Id = HttpContext.Session.GetString("UserId");
+            if(!AdminChanging)
+            {
+                HttpContext.Session.SetString("UserIdUpdate", HttpContext.Session.GetString("UserId"));
+            }
+            Id = HttpContext.Session.GetString("UserIdUpdate");
             Helper helper = new Helper();
             string SQL = $"SELECT * FROM Users WHERE Id = {Id}";
             DataTable dt = helper.RetrieveTable(SQL, "Users");
@@ -25,23 +29,24 @@ namespace Pesach_Project.Pages
             NewUser.Email = row["Email"].ToString();
             NewUser.PhoneNum = row["PhoneNum"].ToString();
             NewUser.BirthDate = DateTime.Parse(row["BirthDate"].ToString());
-            NewUser.Admin = bool.Parse(row["Admin"].ToString());
             
             return Page();
         }
         public IActionResult OnPost()
         {
             Helper helper = new Helper();
-            Id = HttpContext.Session.GetString("UserId");
+            Id = HttpContext.Session.GetString("UserIdUpdate");
             NewUser.Id = int.Parse(Id);
-            NewUser.Admin = bool.Parse(HttpContext.Session.GetString("Admin"));
             int n = helper.UpdateUsers(NewUser, "Users");
             if (n == -1)
             {
                 msg = "Username already taken.";
                 return Page();
             }
-            HttpContext.Session.SetString("UserName", NewUser.UserName);
+            if(Id == HttpContext.Session.GetString("UserId"))
+            {
+                HttpContext.Session.SetString("UserName", NewUser.UserName);
+            }
             return RedirectToPage("/Index");
         }
     }

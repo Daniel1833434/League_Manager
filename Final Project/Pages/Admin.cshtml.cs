@@ -27,7 +27,7 @@ namespace Pesach_Project.Pages
                 return RedirectToPage("/Index");
             }
             Helper helper = new Helper();
-            string SQL = "SELECT * FROM Users";
+            string SQL = "SELECT * FROM Users Where Admin = 'False'";
             Usersdt  = helper.RetrieveTable(SQL, "Users");
 
             SQL = "SELECT * FROM Leagues";

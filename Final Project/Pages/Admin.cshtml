@@ -36,36 +36,30 @@
 						<td>@row[column]</td>
 					}
 				}
-				@if(@row["Admin"].ToString() == "False"){
-					<td class="lm-actions">
-						<form method="post" asp-page-handler="MakeAdmin">
-							<input type="hidden" name="UserId" value="@row["Id"]" />
-							<button type="submit" class="btn btn-success btn-sm">
-								Make Admin
-							</button>
-						</form>
-                    </td>
+				<td class="lm-actions">
+					<form method="post" asp-page-handler="MakeAdmin">
+						<input type="hidden" name="UserId" value="@row["Id"]" />
+						<button type="submit" class="btn btn-success btn-sm">
+							Make Admin
+						</button>
+					</form>
+			
+					<form method="post" asp-page-handler="UpdateUser">
+						<input type="hidden" name="UserId" value="@row["Id"]" />
 
-					<td class="lm-actions">
-						<form method="post" asp-page-handler="UpdateUser">
-							<input type="hidden" name="UserId" value="@row["Id"]" />
+						<button type="submit" class="btn btn-warning btn-sm">
+							Update
+						</button>
+					</form>
+				
+					<form method="post" asp-page-handler="DeleteUser">
+						<input type="hidden" name="UserId" value="@row["Id"]" />
 
-							<button type="submit" class="btn btn-warning btn-sm">
-								Update
-							</button>
-						</form>
-					</td>
-
-					<td class="lm-actions">
-						<form method="post" asp-page-handler="DeleteUser">
-							<input type="hidden" name="UserId" value="@row["Id"]" />
-
-							<button type="submit" class="btn btn-danger btn-sm">
-								Delete
-							</button>
-						</form>
-					</td>
-				}
+						<button type="submit" class="btn btn-danger btn-sm">
+							Delete
+						</button>
+					</form>
+				</td>
 			</tr>
 
 		}

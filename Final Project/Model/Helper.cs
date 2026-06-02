@@ -610,20 +610,28 @@ namespace Pesach_Project.Model
             // התחברות למסד הנתונים
             SqlConnection con = new SqlConnection(conString);
 
-            // בניית פקודת SQL
-            string SQLStr = $"SELECT * FROM {table}";
+            // בדיקה אם שם המשתמש כבר תפוס על ידי משתמש אחר
+            string SQLStr = $"SELECT * FROM {table} WHERE UserName LIKE '{user.UserName}' AND Id <> {user.Id}";
             SqlCommand cmd = new SqlCommand(SQLStr, con);
 
-            // בניית DataSet
             DataSet ds = new DataSet();
 
-            // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, table);
 
-            // בניית השורה להוספה
+            if (ds.Tables[table].Rows.Count > 0)
+            {
+                return -1;
+            }
+
+            // בניית פקודת SQL
+            SQLStr = $"SELECT * FROM {table}";
+            cmd = new SqlCommand(SQLStr, con);
+
+            adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(ds, table);
+
             DataRow dr = ds.Tables[table].Select($"Id = {user.Id}")[0];
-            ;
             dr["UserName"] = user.UserName;
             dr["FirstName"] = user.FirstName;
             dr["LastName"] = user.LastName;

@@ -8,6 +8,7 @@ namespace Pesach_Project.Pages
     public class LeagueTableModel : PageModel
     {
         public string LeagueId { get; set; }
+        public string medal { get; set; }
         public DataTable dt { get; set; }
         public int rank { get; set; } = 1;
         public void OnGet()

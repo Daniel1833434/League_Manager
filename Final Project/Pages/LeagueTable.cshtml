@@ -20,7 +20,24 @@
 		@foreach (DataRow row in Model.dt.Rows)
 		{
 			<tr>
-				<td class="fw-bold">@Model.rank</td>
+				@if(Model.rank == 1)
+				{
+					Model.medal = "🏆";
+				}
+				else if (Model.rank == 2)
+				{
+					Model.medal = "🥈";
+				}
+				else if (Model.rank == 3)
+				{
+					Model.medal = "🥉";
+					
+				}
+				else
+				{
+					Model.medal = Model.rank.ToString();
+				}
+				<td class="fw-bold"> @Model.medal</td>
 				@foreach (DataColumn column in Model.dt.Columns)
 				{
 					<td class="fw-bold">@row[column]</td>

@@ -144,7 +144,7 @@ namespace Pesach_Project.Model
 
             DataSet ds = new DataSet();
 
-            // 1. Delete all games with this player
+            // 1. מחיקת כל המשחקים בהם השחקן משתתף
             string gamesSQL = $"SELECT * FROM Games WHERE Player1Id = {int.Parse(Id)} OR Player2Id = {int.Parse(Id)}";
 
             SqlCommand gamesCmd = new SqlCommand(gamesSQL, con);
@@ -161,7 +161,7 @@ namespace Pesach_Project.Model
             int deletedGames = gamesAdapter.Update(ds, "Games");
 
 
-            // 2. Delete the player himself
+            // 2. מחיקת השחקן עצמו
             string playerSQL = $"SELECT * FROM {table} WHERE Id = @Id";
 
             SqlCommand playerCmd = new SqlCommand(playerSQL, con);
@@ -218,17 +218,14 @@ namespace Pesach_Project.Model
 
         public int UpdatePlayerName(int LeagueId,string playerId, string newName)
         {
-            // התחברות למסד הנתונים
+            //בדיקה האם שם השחקן תפוס כבר בליגה
             SqlConnection con = new SqlConnection(conString);
 
-            // בניית פקודת SQL
             string SQLStr = $"SELECT * FROM Players WHERE LeagueId = {LeagueId} AND PlayerName LIKE '{newName}'";
             SqlCommand cmd = new SqlCommand(SQLStr, con);
 
-            // בניית DataSet
             DataSet ds = new DataSet();
 
-            // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Players");
 
@@ -237,6 +234,7 @@ namespace Pesach_Project.Model
                 return -1;
             }
 
+            // עדכון שם השחקן 
             SQLStr = $"SELECT * FROM Players WHERE LeagueId = {LeagueId} AND Id = {playerId}";
             cmd = new SqlCommand(SQLStr, con);
 
@@ -244,10 +242,12 @@ namespace Pesach_Project.Model
             adapter.Fill(ds, "Players");
 
             DataRow dr = ds.Tables["Players"].Select($"Id = {playerId}")[0];
+
+            // עדכון שם השחקן בכל המשחקים בהם משתתף
             UpdateGamesPlayerName(newName, dr["PlayerName"].ToString(), LeagueId.ToString());
+
             dr["PlayerName"] = newName;
 
-            // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
            
             int n = adapter.Update(ds, "Players");
@@ -269,8 +269,7 @@ namespace Pesach_Project.Model
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Games");
 
-            cmd = new SqlCommand(SQLStr, con);
-
+           // שינוי השם בכל משחק שבו השחקן משתתף
             foreach (DataRow dr in ds.Tables["Games"].Rows)
             {
                 if (dr["Player1Name"].ToString() == OldPlayerName)
@@ -289,17 +288,14 @@ namespace Pesach_Project.Model
         }
         public int UpdateLeagueName(int LeagueId,int OwnerId ,string newName)
         {
-            // התחברות למסד הנתונים
+            // בדיקה האם שם הליגה תפוס ע"י אותם בעלים
             SqlConnection con = new SqlConnection(conString);
 
-            // בניית פקודת SQL
             string SQLStr = $"SELECT * FROM Leagues WHERE OwnerId = {OwnerId} AND LeagueName LIKE '{newName}'";
             SqlCommand cmd = new SqlCommand(SQLStr, con);
 
-            // בניית DataSet
             DataSet ds = new DataSet();
 
-            // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Leagues");
 
@@ -308,6 +304,7 @@ namespace Pesach_Project.Model
                 return -1;
             }
 
+            //עדכון שם הליגה
             SQLStr = $"SELECT * FROM Leagues ";
             cmd = new SqlCommand(SQLStr, con);
 
@@ -317,7 +314,6 @@ namespace Pesach_Project.Model
             DataRow dr = ds.Tables["Leagues"].Select($"Id = {LeagueId}")[0];
             dr["LeagueName"] = newName;
 
-            // עדכון הדאטה סט בבסיס הנתונים
             SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
             int n = adapter.Update(ds, "Leagues");
             return n;
@@ -339,12 +335,7 @@ namespace Pesach_Project.Model
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Leagues");
 
-            SQLStr = $"SELECT * FROM Leagues ";
-            cmd = new SqlCommand(SQLStr, con);
-
-            adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(ds, "Leagues");
-
+            // עדכון מספר השחקנים המקסימלי בליגה
             DataRow dr = ds.Tables["Leagues"].Select($"Id = {LeagueId}")[0];
             dr["MaxPlayers"] = newMaxPlayers;
 
@@ -392,23 +383,18 @@ namespace Pesach_Project.Model
             // התחברות למסד הנתונים
             SqlConnection con = new SqlConnection(conString);
 
-            // בניית פקודת SQL
-            string SQLStr = $"SELECT * FROM Players ";
-            SqlCommand cmd = new SqlCommand(SQLStr, con);
-
             // בניית DataSet
             DataSet ds = new DataSet();
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
 
             // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Players");
 
-            SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
-            cmd = new SqlCommand(SQLStr, con);
-
-            adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(ds, "Players");
-
+            //הוספת הנקודות לשחקן
             DataRow dr = ds.Tables["Players"].Select($"Id = {PlayerId}")[0];
             dr["PlayerPoints"] = (int)dr["PlayerPoints"] + Points;
 
@@ -422,23 +408,18 @@ namespace Pesach_Project.Model
             // התחברות למסד הנתונים
             SqlConnection con = new SqlConnection(conString);
 
-            // בניית פקודת SQL
-            string SQLStr = $"SELECT * FROM Players ";
-            SqlCommand cmd = new SqlCommand(SQLStr, con);
-
             // בניית DataSet
             DataSet ds = new DataSet();
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
 
             // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Players");
 
-            SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
-            cmd = new SqlCommand(SQLStr, con);
-
-            adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(ds, "Players");
-
+            // איפוס הנקודות לשחקן
             DataRow dr = ds.Tables["Players"].Select($"Id = {PlayerId}")[0];
             dr["PlayerPoints"] = 0;
 
@@ -451,23 +432,18 @@ namespace Pesach_Project.Model
             // התחברות למסד הנתונים
             SqlConnection con = new SqlConnection(conString);
 
-            // בניית פקודת SQL
-            string SQLStr = $"SELECT * FROM Players ";
-            SqlCommand cmd = new SqlCommand(SQLStr, con);
-
             // בניית DataSet
             DataSet ds = new DataSet();
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
 
             // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Players");
 
-            SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
-            cmd = new SqlCommand(SQLStr, con);
-
-            adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(ds, "Players");
-
+            // הוספת המשחקים לשחקו
             DataRow dr = ds.Tables["Players"].Select($"Id = {PlayerId}")[0];
             dr["MatchesPlayed"] = (int)dr["MatchesPlayed"] + Games;
 
@@ -481,23 +457,18 @@ namespace Pesach_Project.Model
             // התחברות למסד הנתונים
             SqlConnection con = new SqlConnection(conString);
 
-            // בניית פקודת SQL
-            string SQLStr = $"SELECT * FROM Players ";
-            SqlCommand cmd = new SqlCommand(SQLStr, con);
-
             // בניית DataSet
             DataSet ds = new DataSet();
+
+            // בניית פקודת SQL
+            string SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
+            SqlCommand cmd = new SqlCommand(SQLStr, con);
 
             // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Players");
 
-            SQLStr = $"SELECT * FROM Players WHERE Id = {PlayerId}";
-            cmd = new SqlCommand(SQLStr, con);
-
-            adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(ds, "Players");
-
+            // איפוס המשחקים לשחקן
             DataRow dr = ds.Tables["Players"].Select($"Id = {PlayerId}")[0];
             dr["MatchesPlayed"] = 0;
 
@@ -521,11 +492,6 @@ namespace Pesach_Project.Model
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Games");
 
-            cmd = new SqlCommand(SQLStr, con);
-
-            adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(ds, "Games");
-
             DataRow dr = ds.Tables["Games"].Select($"Id = {gameId}")[0];
 
             dr["Player1Id"] = game.Player1Id;
@@ -542,23 +508,23 @@ namespace Pesach_Project.Model
 
         public void UpdatePlayerStats(int PlayerId)
         {
-            // התחברות למסד הנתונים
+            // בחירת המשחקים בהם השחקן משתתף
             SqlConnection con = new SqlConnection(conString);
-            ////// checking points and matches in games
-            ///// בניית פקודת SQL
+
             string SQLStr = $"SELECT * FROM Games WHERE Player1Id = {PlayerId} OR Player2Id = {PlayerId}";
+
             SqlCommand cmd = new SqlCommand(SQLStr, con);
 
-            // בניית DataSet
             DataSet ds = new DataSet();
 
-            // טעינת סכימת הנתונים
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Games");
 
+            // איפוס נקודות ומספר משחקים
             ZeroPlayerPoints(PlayerId);
             ZeroPlayerGame(PlayerId);
 
+            // חישוב מחדש של הנקודות ומספר משחקים בהתאם לתוצאות המשחקים
             foreach (DataRow row in ds.Tables["Games"].Rows)
             {
                 if ((int)row["Player1Id"] == PlayerId)
@@ -599,6 +565,7 @@ namespace Pesach_Project.Model
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Players");
 
+            //מעבר על כל שחקן ושחקן ועדכון כל נתוניו
             foreach (DataRow row in ds.Tables["Players"].Rows)
             {
                 UpdatePlayerStats((int)row["Id"]);
@@ -661,9 +628,8 @@ namespace Pesach_Project.Model
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, table);
 
-            // בניית השורה להוספה
             DataRow dr = ds.Tables[table].Select($"Id = {userId}")[0];
-            ;
+
             dr["Admin"] = true;
 
             // עדכון הדאטה סט בבסיס הנתונים
@@ -687,7 +653,7 @@ namespace Pesach_Project.Model
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(ds, "Games");
 
-            // בניית השורה להוספה
+            // מעבר על כל המשחקים בליגה ומחיקתם
             foreach (DataRow dr in ds.Tables["Games"].Rows)
             {
                 dr.Delete();
@@ -715,7 +681,8 @@ namespace Pesach_Project.Model
             adapter.Fill(ds, "Players");
 
             int playersCount = ds.Tables["Players"].Rows.Count;
-            // בניית השורה להוספה
+
+            // יצירת משחק לכל זוג שחקנים בליגה
             for (int distance = 1; distance < playersCount; distance++)
             {
                for(int i = 0; i + distance< playersCount; i++)

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>League Manager — One Pager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --primary-dark: #084298;
+            --primary-soft: #e8f1ff;
+            --accent: #20c997;
+            --dark: #1a1d21;
+            --text: #3d4349;
+            --muted: #6c757d;
+            --line: #e8ecf0;
+            --white: #ffffff;
+            --shadow: 0 8px 30px rgba(13, 110, 253, 0.08);
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "DM Sans", "Segoe UI", sans-serif;
+            color: var(--text);
+            background: #c8d4e8;
+            min-height: 100vh;
+            line-height: 1.45;
+            font-size: 12pt;
+            padding: 12px 0;
+        }
+
+        .sheet {
+            width: 210mm;
+            height: 297mm;
+            max-width: 210mm;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(26, 29, 33, 0.18);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            position: relative;
+            padding: 22px 24px 18px;
+            flex-shrink: 0;
+            background:
+                radial-gradient(circle at 100% 0%, rgba(32, 201, 151, 0.15) 0%, transparent 42%),
+                radial-gradient(circle at 0% 100%, rgba(13, 110, 253, 0.18) 0%, transparent 50%),
+                linear-gradient(135deg, #0d6efd 0%, #084298 100%);
+            color: var(--white);
+        }
+
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(8px);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.35);
+        }
+
+        .student-card {
+            text-align: right;
+            font-size: 0.82rem;
+            opacity: 0.92;
+            line-height: 1.55;
+        }
+
+        .student-card strong {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-family: "Outfit", sans-serif;
+            font-size: 2.35rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.05;
+            margin-bottom: 6px;
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            max-width: 95%;
+            opacity: 0.92;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .stat {
+            flex: 1;
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .stat-num {
+            font-family: "Outfit", sans-serif;
+            font-size: 1.65rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .stat-lbl {
+            font-size: 0.78rem;
+            opacity: 0.85;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* ── Body ── */
+        .body {
+            flex: 1;
+            padding: 16px 20px 12px;
+            overflow: hidden;
+        }
+
+        .section-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .panel {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 13px 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel h2 {
+            font-family: "Outfit", sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 7px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .panel p, .panel li {
+            font-size: 0.85rem;
+            color: var(--text);
+            line-height: 1.38;
+        }
+
+        .panel ul {
+            padding-left: 18px;
+        }
+
+        .panel li { margin-bottom: 5px; }
+
+        .highlight {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        /* Features grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .feat {
+            background: linear-gradient(180deg, #fafcff 0%, #fff 100%);
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            padding: 10px 7px;
+            text-align: center;
+        }
+
+        .feat-icon {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .feat-title {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+
+        /* Scoring */
+        .score-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .scoring-note {
+            font-size: 0.85rem;
+            margin-bottom: 9px;
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 10px 7px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+        }
+
+        .score-card.win  { background: linear-gradient(180deg, #e8f1ff, #fff); border-color: #c5d9f7; }
+        .score-card.draw { background: linear-gradient(180deg, #e8faf4, #fff); border-color: #b8ebd9; }
+        .score-card.loss { background: linear-gradient(180deg, #f5f6f8, #fff); border-color: #dde1e6; }
+
+        .score-card .pts {
+            font-family: "Outfit", sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            line-height: 1;
+        }
+
+        .score-card.draw .pts { color: #0f9b6e; }
+
+        .score-card .lbl {
+            font-size: 0.76rem;
+            color: var(--muted);
+            margin-top: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Flow */
+        .flow-track {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .flow-step {
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            font-size: 0.74rem;
+            font-weight: 600;
+            padding: 5px 9px;
+            border-radius: 6px;
+            border: 1px solid #c5d9f7;
+        }
+
+        .flow-arrow {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+        .flow-note {
+            width: 100%;
+            margin-top: 6px;
+            font-size: 0.74rem;
+            color: var(--muted);
+        }
+
+        /* Tech pills */
+        .pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .pill {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: var(--dark);
+            color: #fff;
+        }
+
+        .pill.blue  { background: var(--primary); }
+        .pill.teal  { background: #0f9b6e; }
+        .pill.gray  { background: #495057; }
+
+        /* DB mini cards */
+        .db-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .db-item {
+            background: var(--primary-soft);
+            border-radius: 8px;
+            padding: 8px 6px;
+            text-align: center;
+            border: 1px solid #c5d9f7;
+        }
+
+        .db-item strong {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--primary-dark);
+            margin-bottom: 2px;
+        }
+
+        .db-item span {
+            font-size: 0.66rem;
+            color: var(--muted);
+            line-height: 1.25;
+        }
+
+        .db-caption {
+            font-size: 0.72rem;
+            margin-top: 7px;
+        }
+
+        /* Footer */
+        .foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 20px;
+            flex-shrink: 0;
+            background: #f8fafc;
+            border-top: 1px solid var(--line);
+            font-size: 0.72rem;
+            color: var(--muted);
+        }
+
+        .foot-brand {
+            font-family: "Outfit", sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        @media print {
+            html, body {
+                background: #fff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .sheet {
+                width: 210mm;
+                height: 297mm;
+                max-width: none;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            .print-hide { display: none !important; }
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+        }
+
+        @media screen and (max-width: 820px) {
+            body { padding: 0; background: #fff; }
+            .sheet {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article class="sheet">
+        <header class="hero">
+            <div class="hero-top">
+                <span class="badge"><span class="badge-dot"></span> Final Project · 2026</span>
+                <div class="student-card">
+                    <strong>Daniel Kirshenboim</strong>
+                </div>
+            </div>
+            <h1>League Manager</h1>
+            <p class="hero-sub">
+                Turn casual sports with friends into a real competition — create leagues,
+                track players, record scores, and watch the standings update automatically.
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-num">4</div>
+                    <div class="stat-lbl">Database tables</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">15+</div>
+                    <div class="stat-lbl">Web pages</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">API</div>
+                    <div class="stat-lbl">Live football data</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="body">
+            <div class="section-label">Overview</div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h2><span class="icon">🎯</span> Problem &amp; Solution</h2>
+                    <p><span class="highlight">Problem:</span> Amateur games with friends often feel unstructured — no scores, no standings, no real competition.</p>
+                    <p style="margin-top:8px;"><span class="highlight">Solution:</span> A clean web platform that manages the full league lifecycle in one place, from signup to final standings.</p>
+                </div>
+                <div class="panel">
+                    <h2><span class="icon">👥</span> Target Audience</h2>
+                    <p>Teens and adults who play basketball, football, or other sports recreationally and want a simple, fun way to keep score and compete with friends.</p>
+                </div>
+            </div>
+
+            <div class="section-label">Key Features</div>
+            <div class="features">
+                <div class="feat"><div class="feat-icon">🔐</div><div class="feat-title">Login &amp;<br />Registration</div></div>
+                <div class="feat"><div class="feat-icon">🏆</div><div class="feat-title">Create &amp;<br />Manage Leagues</div></div>
+                <div class="feat"><div class="feat-icon">👤</div><div class="feat-title">Players &amp;<br />Games</div></div>
+                <div class="feat"><div class="feat-icon">📊</div><div class="feat-title">Live League<br />Table</div></div>
+                <div class="feat"><div class="feat-icon">⚙️</div><div class="feat-title">Auto Generate<br />Games Option</div></div>
+                <div class="feat"><div class="feat-icon">✏️</div><div class="feat-title">Profile<br />Update</div></div>
+                <div class="feat"><div class="feat-icon">👑</div><div class="feat-title">Admin<br />Panel</div></div>
+                <div class="feat"><div class="feat-icon">⚽</div><div class="feat-title">Premier League<br />API Table</div></div>
+            </div>
+
+            <div class="grid-2">
+                <div class="panel">
+                    <div class="section-label" style="margin-bottom:8px;">Scoring</div>
+                    <p class="scoring-note">Recalculated from all games when the league table opens:</p>
+                    <div class="score-row">
+                        <div class="score-card win"><div class="pts">3</div><div class="lbl">Win</div></div>
+                        <div class="score-card draw"><div class="pts">1</div><div class="lbl">Draw</div></div>
+                        <div class="score-card loss"><div class="pts">0</div><div class="lbl">Loss</div></div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="section-label" style="margin-bottom:8px;">User Flow</div>
+                    <div class="flow-track">
+                        <span class="flow-step">Index</span><span class="flow-arrow">→</span>
+                        <span class="flow-step">Login</span><span class="flow-arrow">→</span>
+                        <span class="flow-step">Create League</span><span class="flow-arrow">→</span>
+                        <span class="flow-step">Manage</span><span class="flow-arrow">→</span>
+                        <span class="flow-step">Players</span><span class="flow-arrow">→</span>
+                        <span class="flow-step">Games</span><span class="flow-arrow">→</span>
+                        <span class="flow-step">Table</span>
+                        <p class="flow-note">Also: Profile · About · Privacy · Sports Leagues · Admin</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2 bottom-row">
+                <div>
+                    <div class="section-label">Database</div>
+                    <div class="panel">
+                        <div class="db-grid">
+                            <div class="db-item"><strong>Users</strong><span>Accounts &amp; admin</span></div>
+                            <div class="db-item"><strong>Leagues</strong><span>Owner, max players</span></div>
+                            <div class="db-item"><strong>Players</strong><span>Points &amp; games</span></div>
+                            <div class="db-item"><strong>Games</strong><span>Scores &amp; players</span></div>
+                        </div>
+                        <p class="db-caption" style="color:var(--muted);text-align:center;">SQL Server LocalDB · ADO.NET · Helper</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="section-label">Technology Stack</div>
+                    <div class="panel">
+                        <div class="pills">
+                            <span class="pill">C#</span>
+                            <span class="pill blue">Razor (.cshtml)</span>
+                            <span class="pill gray">SQL Server</span>
+                            <span class="pill gray">ADO.NET</span>
+                            <span class="pill">Session</span>
+                            <span class="pill gray">HTML</span>
+                            <span class="pill gray">CSS</span>
+                            <span class="pill blue">Bootstrap</span>
+                            <span class="pill gray">JavaScript</span>
+                            <span class="pill teal">HttpClient + API</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="foot">
+            <span class="foot-brand">League Manager</span>
+            <span class="print-hide">Open in browser → Ctrl+P → Save as PDF</span>
+        </footer>
+    </article>
+</body>
+</html>

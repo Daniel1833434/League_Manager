@@ -64,15 +64,12 @@ namespace Pesach_Project.Pages
                 msg = "Player name already taken.";
                 return Page();
             }
-            UpdateCurrentPlayers();
             return RedirectToPage();
         }
         public IActionResult OnPostDelete()
         {
             Helper helper = new Helper();
-            LoadPlayers();
             helper.DeletePlayer(PlayerId, "Players");
-            UpdateCurrentPlayers();
             return RedirectToPage("/ManagePlayers");
 
         }

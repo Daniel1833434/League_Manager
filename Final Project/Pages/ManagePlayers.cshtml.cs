@@ -58,6 +58,11 @@ namespace Pesach_Project.Pages
                 msg = "League is at max capacity.";
                 return Page();
             }
+            if(NewPlayer.PlayerName == null)
+            {
+                msg = "Player name cannot be empty!";
+                return Page();
+            }
             int n = helper.InsertToPlayers(NewPlayer, "Players");
             if (n == -1)
             {
